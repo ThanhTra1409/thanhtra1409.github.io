@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>WebSocket Server with Socket.IO - Nguyễn Thanh Trà</title>
+  <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👨‍💻</text></svg>">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body data-lang="en">
+  <div class="overlay" id="overlay">
+    <ul class="menu">
+      <li><a href="/" data-i18n="home">Home</a></li>
+      <li><a href="/posts/" data-i18n="blog">Blog</a></li>
+      <li><a href="/about/" data-i18n="about">About</a></li>
+    </ul>
+  </div>
+  <header>
+    <nav>
+      <div class="brand"><a href="/" data-i18n="site-title">Nguyễn Thanh Trà</a></div>
+      <ul>
+        <li><a href="/" data-i18n="home">Home</a></li>
+        <li><a href="/posts/" data-i18n="blog">Blog</a></li>
+        <li><a href="/about/" data-i18n="about">About</a></li>
+        <li class="lang-toggle-wrapper">
+          <div id="lang-switch" class="lang-switch" data-lang="en">
+            <div class="lang-switch-slider"></div>
+            <button id="lang-vn" class="lang-btn">VN</button>
+            <button id="lang-en" class="lang-btn">EN</button>
+          </div>
+        </li>
+      </ul>
+      <div class="menu-toggle" onclick="toggleMenu()" aria-label="menu">☰</div>
+    </nav>
+  </header>
+  <main>
+    <article class="post">
+      <h1>WebSocket Server with Socket.IO</h1>
+      <p class="meta">2025-12-11</p>
+      <div class="featured-image"><img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&auto=format&fit=crop" alt="WebSocket server với Socket.IO"></div>
+      <p>WebSocket is a great technology for realtime communication, but implementing it from scratch can be complex. Socket.IO is a library that simplifies this process, providing fallback mechanisms, automatic reconnection, and many other convenient features.</p>
+<p>Socket.IO is not just a WebSocket wrapper - it provides additional features like rooms, namespaces, broadcasting, and compatibility with older browsers. This article will guide you through building realtime applications with Socket.IO.</p>
+<img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1200&auto=format&fit=crop" alt="Socket.IO Realtime" style="max-width: 100%; height: auto; border-radius: 8px; margin: 20px 0;">
+<h3>1. Installation and Basic Setup</h3>
+<p>``<code>bash<br/>npm install socket.io express<br/></code>``</p>
+<h4>Basic Server</h4>
+<p>```javascript<br/>const express = require('express');<br/>const http = require('http');<br/>const socketIO = require('socket.io');</p>
+<p>const app = express();<br/>const server = http.createServer(app);<br/>const io = socketIO(server);</p>
+<p>// Serve static files<br/>app.use(express.static('public'));</p>
+<p>// Socket.IO connection handler<br/>io.on('connection', (socket) => {<br/>  console.log('Client connected:', socket.id);</p>
+<p>// Receive message from client<br/>  socket.on('message', (data) => {<br/>    console.log('Received message:', data);</p>
+<p>// Send back to client<br/>    socket.emit('message', { text: 'Server received: ' + data.text });<br/>  });</p>
+<p>// Handle disconnect<br/>  socket.on('disconnect', () => {<br/>    console.log('Client disconnected:', socket.id);<br/>  });<br/>});</p>
+<p>const PORT = 3000;<br/>server.listen(PORT, () => {<br/>  console.log(<code>Server running on http://localhost:${PORT}</code>);<br/>});<br/>```</p>
+<h4>Client HTML</h4>
+<p>```html<br/><!DOCTYPE html><br/><html><br/><head><br/>  <title>Socket.IO Chat</title><br/>  <script src="/socket.io/socket.io.js"></script><br/></head><br/><body><br/>  <div id="messages"></div><br/>  <input id="messageInput" type="text" placeholder="Enter message..."><br/>  <button onclick="sendMessage()">Send</button></p>
+<p><script><br/>    // Connect to server<br/>    const socket = io();</p>
+<p>// Handle when connected<br/>    socket.on('connect', () => {<br/>      console.log('Connected:', socket.id);<br/>    });</p>
+<p>// Receive message from server<br/>    socket.on('message', (data) => {<br/>      const div = document.createElement('div');<br/>      div.textContent = data.text;<br/>      document.getElementById('messages').appendChild(div);<br/>    });</p>
+<p>// Send message<br/>    function sendMessage() {<br/>      const input = document.getElementById('messageInput');<br/>      socket.emit('message', { text: input.value });<br/>      input.value = '';<br/>    }</p>
+<p>// Handle disconnect<br/>    socket.on('disconnect', () => {<br/>      console.log('Disconnected');<br/>    });<br/>  </script><br/></body><br/></html><br/>```</p>
+<h3>2. Chat Application with Rooms</h3>
+<p>```javascript<br/>const express = require('express');<br/>const http = require('http');<br/>const socketIO = require('socket.io');</p>
+<p>const app = express();<br/>const server = http.createServer(app);<br/>const io = socketIO(server);</p>
+<p>app.use(express.static('public'));</p>
+<p>// Store user information<br/>const users = new Map();</p>
+<p>io.on('connection', (socket) => {<br/>  console.log('New connection:', socket.id);</p>
+<p>// Join room<br/>  socket.on('join-room', (data) => {<br/>    const { username, room } = data;</p>
+<p>socket.join(room);<br/>    users.set(socket.id, { username, room });</p>
+<p>// Notify user<br/>    socket.emit('message', {<br/>      username: 'System',<br/>      text: <code>Welcome ${username} to room ${room}!</code>,<br/>      timestamp: new Date()<br/>    });</p>
+<p>// Notify room (except user)<br/>    socket.to(room).emit('message', {<br/>      username: 'System',<br/>      text: <code>${username} joined the room</code>,<br/>      timestamp: new Date()<br/>    });</p>
+<p>// Send list of users in room<br/>    updateRoomUsers(room);<br/>  });</p>
+<p>// Receive chat message<br/>  socket.on('chat-message', (data) => {<br/>    const user = users.get(socket.id);<br/>    if (!user) return;</p>
+<p>const messageData = {<br/>      username: user.username,<br/>      text: data.text,<br/>      timestamp: new Date()<br/>    };</p>
+<p>// Broadcast to all in room<br/>    io.to(user.room).emit('message', messageData);<br/>  });</p>
+<p>// Typing indicator<br/>  socket.on('typing', (isTyping) => {<br/>    const user = users.get(socket.id);<br/>    if (!user) return;</p>
+<p>socket.to(user.room).emit('user-typing', {<br/>      username: user.username,<br/>      isTyping: isTyping<br/>    });<br/>  });</p>
+<p>// Disconnect<br/>  socket.on('disconnect', () => {<br/>    const user = users.get(socket.id);<br/>    if (user) {<br/>      io.to(user.room).emit('message', {<br/>        username: 'System',<br/>        text: <code>${user.username} left the room</code>,<br/>        timestamp: new Date()<br/>      });</p>
+<p>users.delete(socket.id);<br/>      updateRoomUsers(user.room);<br/>    }<br/>  });<br/>});</p>
+<p>function updateRoomUsers(room) {<br/>  const roomUsers = Array.from(users.values())<br/>    .filter(user => user.room === room)<br/>    .map(user => user.username);</p>
+<p>io.to(room).emit('room-users', roomUsers);<br/>}</p>
+<p>server.listen(3000, () => {<br/>  console.log('Chat server running on port 3000');<br/>});<br/>```</p>
+<h3>3. Broadcasting and Namespaces</h3>
+<p>```javascript<br/>// Broadcasting<br/>io.on('connection', (socket) => {<br/>  // Send to this socket only<br/>  socket.emit('message', 'Only for you');</p>
+<p>// Send to all except this socket<br/>  socket.broadcast.emit('message', 'Send to all except sender');</p>
+<p>// Send to all<br/>  io.emit('message', 'Send to everyone');</p>
+<p>// Send to room<br/>  io.to('room1').emit('message', 'Send to room1');</p>
+<p>// Send to multiple rooms<br/>  io.to('room1').to('room2').emit('message', 'Send to 2 rooms');</p>
+<p>// Send to all in room except sender<br/>  socket.to('room1').emit('message', 'Send to room1 except sender');<br/>});</p>
+<p>// Namespaces<br/>const adminNamespace = io.of('/admin');<br/>const chatNamespace = io.of('/chat');</p>
+<p>adminNamespace.on('connection', (socket) => {<br/>  console.log('Admin connected');<br/>  socket.emit('admin-message', 'Welcome admin');<br/>});</p>
+<p>chatNamespace.on('connection', (socket) => {<br/>  console.log('Chat user connected');<br/>  socket.emit('chat-message', 'Welcome to chat');<br/>});<br/>```</p>
+<h3>4. Authentication and Middleware</h3>
+<p>```javascript<br/>const jwt = require('jsonwebtoken');</p>
+<p>// Middleware for authentication<br/>io.use((socket, next) => {<br/>  const token = socket.handshake.auth.token;</p>
+<p>if (!token) {<br/>    return next(new Error('Authentication error'));<br/>  }</p>
+<p>try {<br/>    const decoded = jwt.verify(token, 'secret-key');<br/>    socket.userId = decoded.userId;<br/>    next();<br/>  } catch (err) {<br/>    next(new Error('Invalid token'));<br/>  }<br/>});</p>
+<p>io.on('connection', (socket) => {<br/>  console.log('Authenticated user:', socket.userId);<br/>});</p>
+<p>// Client<br/>const socket = io({<br/>  auth: {<br/>    token: 'your-jwt-token'<br/>  }<br/>});<br/>```</p>
+<h3>5. Acknowledgments (Callbacks)</h3>
+<p>```javascript<br/>// Server<br/>io.on('connection', (socket) => {<br/>  socket.on('send-message', (data, callback) => {<br/>    console.log('Received:', data);</p>
+<p>// Process message...</p>
+<p>// Call callback to acknowledge<br/>    callback({<br/>      status: 'ok',<br/>      messageId: generateId()<br/>    });<br/>  });<br/>});</p>
+<p>// Client<br/>socket.emit('send-message', { text: 'Hello' }, (response) => {<br/>  console.log('Server response:', response);<br/>});<br/>```</p>
+<h3>6. Error Handling and Reconnection</h3>
+<p>```javascript<br/>// Client<br/>const socket = io({<br/>  reconnection: true,<br/>  reconnectionDelay: 1000,<br/>  reconnectionDelayMax: 5000,<br/>  reconnectionAttempts: 5<br/>});</p>
+<p>socket.on('connect', () => {<br/>  console.log('Connected');<br/>});</p>
+<p>socket.on('connect_error', (error) => {<br/>  console.error('Connection error:', error);<br/>});</p>
+<p>socket.on('disconnect', (reason) => {<br/>  console.log('Disconnected:', reason);</p>
+<p>if (reason === 'io server disconnect') {<br/>    // Server actively disconnected, need manual reconnect<br/>    socket.connect();<br/>  }<br/>});</p>
+<p>socket.on('reconnect', (attemptNumber) => {<br/>  console.log('Reconnected after', attemptNumber, 'attempts');<br/>});</p>
+<p>socket.on('reconnect_attempt', (attemptNumber) => {<br/>  console.log('Reconnection attempt', attemptNumber);<br/>});</p>
+<p>socket.on('reconnect_failed', () => {<br/>  console.log('Reconnection failed');<br/>});<br/>```</p>
+<h3>7. Performance and Scaling</h3>
+<h4>Using Redis Adapter for Multiple Servers</h4>
+<p>```javascript<br/>const redis = require('socket.io-redis');</p>
+<p>io.adapter(redis({ <br/>  host: 'localhost', <br/>  port: 6379 <br/>}));</p>
+<p>// Now can scale horizontally with multiple server instances<br/>```</p>
+<h4>Compression</h4>
+<p>``<code>javascript<br/>const io = socketIO(server, {<br/>  perMessageDeflate: {<br/>    threshold: 1024 // Compress if message > 1KB<br/>  }<br/>});<br/></code>``</p>
+<p>Socket.IO is a great choice for building realtime applications with JavaScript. With features like rooms, namespaces, automatic reconnection, and fallback mechanisms, Socket.IO helps developers focus on business logic instead of worrying about low-level issues.</p>
+<p>However, note that Socket.IO is not pure WebSocket - it has more overhead. For simple applications that only need basic WebSocket, consider using the ws library or native WebSocket.</p>
+<p>---</p>
+<h3>References</h3>
+<p>- [Socket.IO Documentation](https://socket.io/docs/v4/)<br/>- [Socket.IO Server API](https://socket.io/docs/v4/server-api/)<br/>- [Socket.IO Client API](https://socket.io/docs/v4/client-api/)<br/>- [Building Realtime Apps with Socket.IO](https://socket.io/get-started/chat)</p>
+    </article>
+    <section class="social-section">
+      <div class="social-container">
+        <h2 data-i18n="social-title">X&#227; h&#7897;i</h2>
+        <div class="social-grid">
+          <a href="https://github.com/ThanhTra1409" target="_blank" class="social-card">
+            <i class="fab fa-github social-icon"></i>
+            <h3>GitHub</h3>
+            <p>@nttra204</p>
+          </a>
+          <a href="https://www.facebook.com/nguyen.thanh.tra.970568?locale=vi_VN" target="_blank" class="social-card">
+            <i class="fab fa-facebook social-icon"></i>
+            <h3>Facebook</h3>
+            <p>Nguy&#7877;n Thanh Tr&#224;</p>
+          </a>
+          <a href="https://www.instagram.com/nttra204_/?igsh=MXVlc3p1NG4zdnBidw%3D%3D&utm_source=qr" target="_blank" class="social-card">
+            <i class="fab fa-instagram social-icon"></i>
+            <h3>Instagram</h3>
+            <p>@nttra204_</p>
+          </a>
+          <a href="https://www.linkedin.com/in/thanh-tra-nguyen-84a46833a" target="_blank" class="social-card">
+            <i class="fab fa-linkedin social-icon"></i>
+            <h3>LinkedIn</h3>
+            <p>Nguy&#7877;n Thanh Tr&#224;</p>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer>
+    <div class="footer-content">
+      <div class="footer-brand">
+        <h3 data-i18n="site-title">Nguyễn Thanh Trà</h3>
+        <p class="footer-tagline" data-i18n="footer-tagline">Building scalable solutions with passion</p>
+      </div>
+      <div class="footer-contact">
+        <h4 data-i18n="contact-info">Th&#244;ng tin li&#234;n h&#7879;</h4>
+        <div class="contact-info-grid">
+          <div class="contact-info-item">
+            <i class="fas fa-envelope"></i>
+            <a href="mailto:ntra140924@gmail.com">ntra140924@gmail.com</a>
+          </div>
+          <div class="contact-info-item">
+            <i class="fas fa-phone"></i>
+            <a href="tel:0941779093">0941779093</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p><span data-i18n="footer-copyright">© 2025</span> <span data-i18n="site-title">Nguyễn Thanh Trà</span></p>
+      </div>
+    </div>
+  </footer>
+  <script src="/js/i18n.js"></script>
+  <script>
+  function toggleMenu(){
+    document.body.classList.toggle('menu-open');
+  }
+  </script>
+</body>
+</html>

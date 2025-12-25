@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Socket cơ bản trong Java - Nguyễn Thanh Trà</title>
+  <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👨‍💻</text></svg>">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+  <div class="overlay" id="overlay">
+    <ul class="menu">
+      <li><a href="/" data-i18n="home">Home</a></li>
+      <li><a href="/posts/" data-i18n="blog">Blog</a></li>
+      <li><a href="/about/" data-i18n="about">About</a></li>
+    </ul>
+  </div>
+  <header>
+    <nav>
+      <div class="brand"><a href="/" data-i18n="site-title">Nguyễn Thanh Trà</a></div>
+      <ul>
+        <li><a href="/" data-i18n="home">Home</a></li>
+        <li><a href="/posts/" data-i18n="blog">Blog</a></li>
+        <li><a href="/about/" data-i18n="about">About</a></li>
+        <li class="lang-toggle-wrapper">
+          <div id="lang-switch" class="lang-switch" data-lang="vi">
+            <div class="lang-switch-slider"></div>
+            <button id="lang-vn" class="lang-btn">VN</button>
+            <button id="lang-en" class="lang-btn">EN</button>
+          </div>
+        </li>
+      </ul>
+      <div class="menu-toggle" onclick="toggleMenu()" aria-label="menu">☰</div>
+    </nav>
+  </header>
+  <main>
+    <article class="post">
+      <h1>Socket cơ bản trong Java</h1>
+      <p class="meta">2025-12-01</p>
+      <div class="featured-image"><img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&auto=format&fit=crop" alt="Socket cơ bản trong Java"></div>
+      <p>Lập trình mạng là một phần quan trọng trong phát triển ứng dụng hiện đại. Socket là nền tảng cơ bản nhất để thiết lập kết nối mạng giữa các máy tính. Trong Java, package <code>java.net</code> cung cấp các class <code>Socket</code> và <code>ServerSocket</code> giúp chúng ta dễ dàng xây dựng ứng dụng client-server.</p>
+<p>Bài viết này sẽ giới thiệu cách sử dụng Socket trong Java để tạo kết nối TCP/IP, truyền nhận dữ liệu giữa client và server, cùng với những lưu ý quan trọng khi làm việc với Socket.</p>
+<img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&auto=format&fit=crop" alt="Socket Architecture" style="max-width: 100%; height: auto; border-radius: 8px; margin: 20px 0;">
+<h3>1. Socket là gì?</h3>
+<p>Socket là điểm cuối (endpoint) của một kênh giao tiếp hai chiều giữa hai chương trình chạy trên mạng. Trong Java, có hai loại socket chính:</p>
+<p>- <strong>Socket</strong>: Dùng cho phía client để kết nối tới server<br/>- <strong>ServerSocket</strong>: Dùng cho phía server để lắng nghe kết nối từ client</p>
+<img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=1000&auto=format&fit=crop" alt="TCP Connection Flow" style="max-width: 100%; height: auto; border-radius: 8px; margin: 20px 0;">
+<h3>2. Tạo Server Socket</h3>
+<p>Server cần tạo một <code>ServerSocket</code> để lắng nghe các kết nối đến trên một cổng (port) cụ thể:</p>
+<p>```java<br/>import java.io.<em>;<br/>import java.net.</em>;</p>
+<p>public class SimpleServer {<br/>    public static void main(String[] args) {<br/>        try (ServerSocket serverSocket = new ServerSocket(8080)) {<br/>            System.out.println("Server đang lắng nghe trên port 8080...");</p>
+<p>// Chấp nhận kết nối từ client<br/>            Socket clientSocket = serverSocket.accept();<br/>            System.out.println("Client đã kết nối: " + clientSocket.getInetAddress());</p>
+<p>// Tạo input/output streams<br/>            BufferedReader in = new BufferedReader(<br/>                new InputStreamReader(clientSocket.getInputStream()));<br/>            PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);</p>
+<p>// Đọc dữ liệu từ client<br/>            String message = in.readLine();<br/>            System.out.println("Nhận từ client: " + message);</p>
+<p>// Gửi phản hồi về client<br/>            out.println("Server đã nhận: " + message);</p>
+<p>// Đóng kết nối<br/>            clientSocket.close();</p>
+<p>} catch (IOException e) {<br/>            e.printStackTrace();<br/>        }<br/>    }<br/>}<br/>```</p>
+<h3>3. Tạo Client Socket</h3>
+<p>Client sử dụng <code>Socket</code> để kết nối tới server:</p>
+<p>```java<br/>import java.io.<em>;<br/>import java.net.</em>;</p>
+<p>public class SimpleClient {<br/>    public static void main(String[] args) {<br/>        try (Socket socket = new Socket("localhost", 8080)) {<br/>            System.out.println("Đã kết nối tới server!");</p>
+<p>// Tạo input/output streams<br/>            PrintWriter out = new PrintWriter(socket.getOutputStream(), true);<br/>            BufferedReader in = new BufferedReader(<br/>                new InputStreamReader(socket.getInputStream()));</p>
+<p>// Gửi dữ liệu tới server<br/>            out.println("Xin chào server!");</p>
+<p>// Nhận phản hồi từ server<br/>            String response = in.readLine();<br/>            System.out.println("Nhận từ server: " + response);</p>
+<p>} catch (IOException e) {<br/>            e.printStackTrace();<br/>        }<br/>    }<br/>}<br/>```</p>
+<h3>4. Xử lý Streams</h3>
+<p>Khi làm việc với Socket, chúng ta cần hiểu về Input/Output Streams:</p>
+<p>- <strong>InputStream</strong>: Đọc dữ liệu từ socket<br/>- <strong>OutputStream</strong>: Ghi dữ liệu vào socket</p>
+<p>Thường sử dụng các wrapper class như <code>BufferedReader</code>, <code>PrintWriter</code> để làm việc với text, hoặc <code>DataInputStream</code>, <code>DataOutputStream</code> để làm việc với dữ liệu nhị phân.</p>
+<h3>5. Lưu ý quan trọng</h3>
+<p><strong>Đóng tài nguyên</strong>: Luôn đóng Socket và Streams sau khi sử dụng để tránh rò rỉ tài nguyên. Sử dụng try-with-resources để tự động đóng:</p>
+<p>``<code>java<br/>try (Socket socket = new Socket("localhost", 8080);<br/>     PrintWriter out = new PrintWriter(socket.getOutputStream(), true);<br/>     BufferedReader in = new BufferedReader(<br/>         new InputStreamReader(socket.getInputStream()))) {<br/>    // Xử lý logic<br/>}<br/></code>``</p>
+<p><strong>Xử lý ngoại lệ</strong>: Cần xử lý các exception như <code>IOException</code>, <code>UnknownHostException</code> khi làm việc với Socket.</p>
+<p><strong>Timeout</strong>: Có thể set timeout cho Socket để tránh chờ đợi vô thời hạn:</p>
+<p>``<code>java<br/>socket.setSoTimeout(5000); // 5 giây<br/></code>``</p>
+<p>Socket là công cụ cơ bản và mạnh mẽ để xây dựng ứng dụng mạng trong Java. Hiểu rõ cách hoạt động của <code>Socket</code> và <code>ServerSocket</code> là nền tảng để phát triển các ứng dụng phức tạp hơn như chat application, file transfer, hoặc multiplayer games.</p>
+<p>Trong các bài viết tiếp theo, chúng ta sẽ tìm hiểu về cách xử lý nhiều client đồng thời sử dụng multithreading, và các kỹ thuật lập trình mạng nâng cao hơn với Java NIO.</p>
+<p>---</p>
+<h3>Tài liệu tham khảo</h3>
+<p>- [Oracle Java Documentation - Socket](https://docs.oracle.com/javase/8/docs/api/java/net/Socket.html)<br/>- [Oracle Java Documentation - ServerSocket](https://docs.oracle.com/javase/8/docs/api/java/net/ServerSocket.html)<br/>- [Java Network Programming Tutorial](https://www.baeldung.com/a-guide-to-java-sockets)<br/>- [Java Socket Programming Examples](https://www.geeksforgeeks.org/socket-programming-in-java/)</p>
+    </article>
+    <section class="social-section">
+      <div class="social-container">
+        <h2 data-i18n="social-title">X&#227; h&#7897;i</h2>
+        <div class="social-grid">
+          <a href="https://github.com/ThanhTra1409" target="_blank" class="social-card">
+            <i class="fab fa-github social-icon"></i>
+            <h3>GitHub</h3>
+            <p>@nttra204</p>
+          </a>
+          <a href="https://www.facebook.com/nguyen.thanh.tra.970568?locale=vi_VN" target="_blank" class="social-card">
+            <i class="fab fa-facebook social-icon"></i>
+            <h3>Facebook</h3>
+            <p>Nguy&#7877;n Thanh Tr&#224;</p>
+          </a>
+          <a href="https://www.instagram.com/nttra204_/?igsh=MXVlc3p1NG4zdnBidw%3D%3D&utm_source=qr" target="_blank" class="social-card">
+            <i class="fab fa-instagram social-icon"></i>
+            <h3>Instagram</h3>
+            <p>@nttra204_</p>
+          </a>
+          <a href="https://www.linkedin.com/in/thanh-tra-nguyen-84a46833a" target="_blank" class="social-card">
+            <i class="fab fa-linkedin social-icon"></i>
+            <h3>LinkedIn</h3>
+            <p>Nguy&#7877;n Thanh Tr&#224;</p>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer>
+    <div class="footer-content">
+      <div class="footer-brand">
+        <h3 data-i18n="site-title">Nguyễn Thanh Trà</h3>
+        <p class="footer-tagline" data-i18n="footer-tagline">Building scalable solutions with passion</p>
+      </div>
+      <div class="footer-contact">
+        <h4 data-i18n="contact-info">Th&#244;ng tin li&#234;n h&#7879;</h4>
+        <div class="contact-info-grid">
+          <div class="contact-info-item">
+            <i class="fas fa-envelope"></i>
+            <a href="mailto:ntra140924@gmail.com">ntra140924@gmail.com</a>
+          </div>
+          <div class="contact-info-item">
+            <i class="fas fa-phone"></i>
+            <a href="tel:0941779093">0941779093</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p><span data-i18n="footer-copyright">© 2025</span> <span data-i18n="site-title">Nguyễn Thanh Trà</span></p>
+      </div>
+    </div>
+  </footer>
+  <script src="/js/i18n.js"></script>
+  <script>
+  function toggleMenu(){
+    document.body.classList.toggle('menu-open');
+  }
+  </script>
+</body>
+</html>

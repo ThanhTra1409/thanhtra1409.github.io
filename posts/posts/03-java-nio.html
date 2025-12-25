@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Java NIO — lập trình mạng hiệu năng cao - Nguyễn Thanh Trà</title>
+  <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👨‍💻</text></svg>">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+  <div class="overlay" id="overlay">
+    <ul class="menu">
+      <li><a href="/" data-i18n="home">Home</a></li>
+      <li><a href="/posts/" data-i18n="blog">Blog</a></li>
+      <li><a href="/about/" data-i18n="about">About</a></li>
+    </ul>
+  </div>
+  <header>
+    <nav>
+      <div class="brand"><a href="/" data-i18n="site-title">Nguyễn Thanh Trà</a></div>
+      <ul>
+        <li><a href="/" data-i18n="home">Home</a></li>
+        <li><a href="/posts/" data-i18n="blog">Blog</a></li>
+        <li><a href="/about/" data-i18n="about">About</a></li>
+        <li class="lang-toggle-wrapper">
+          <div id="lang-switch" class="lang-switch" data-lang="vi">
+            <div class="lang-switch-slider"></div>
+            <button id="lang-vn" class="lang-btn">VN</button>
+            <button id="lang-en" class="lang-btn">EN</button>
+          </div>
+        </li>
+      </ul>
+      <div class="menu-toggle" onclick="toggleMenu()" aria-label="menu">☰</div>
+    </nav>
+  </header>
+  <main>
+    <article class="post">
+      <h1>Java NIO — lập trình mạng hiệu năng cao</h1>
+      <p class="meta">2025-12-03</p>
+      <div class="featured-image"><img src="https://images.unsplash.com/photo-1555949963-aa79dcee981c?w=800&auto=format&fit=crop" alt="Java NIO — lập trình mạng hiệu năng cao"></div>
+      <p>Trong các bài trước, chúng ta đã tìm hiểu về Socket cơ bản và multithreading server. Tuy nhiên, với mô hình thread-per-connection, khi số lượng kết nối tăng lên hàng nghìn, hệ thống sẽ gặp vấn đề về hiệu suất và tài nguyên.</p>
+<p>Java NIO (New I/O hoặc Non-blocking I/O) được giới thiệu từ Java 1.4 để giải quyết vấn đề này. NIO cho phép một thread xử lý nhiều kết nối đồng thời thông qua cơ chế non-blocking I/O, giúp xây dựng server có khả năng mở rộng cao.</p>
+<img src="https://images.unsplash.com/photo-1555949963-aa79dcee981c?w=1200&auto=format&fit=crop" alt="Java NIO Architecture" style="max-width: 100%; height: auto; border-radius: 8px; margin: 20px 0;">
+<h3>1. Sự khác biệt giữa I/O và NIO</h3>
+<p><strong>Blocking I/O (java.io)</strong>:<br/>- Một thread chỉ xử lý một kết nối<br/>- Thread bị block khi đọc/ghi dữ liệu<br/>- Không hiệu quả với nhiều kết nối</p>
+<p><strong>Non-blocking I/O (java.nio)</strong>:<br/>- Một thread có thể xử lý nhiều kết nối<br/>- Không bị block khi không có dữ liệu<br/>- Sử dụng Selector để giám sát nhiều Channel</p>
+<h3>2. Các thành phần chính của NIO</h3>
+<p><strong>Channel</strong>: Kênh đọc/ghi dữ liệu, tương tự như Stream nhưng hỗ trợ cả đọc và ghi.</p>
+<p><strong>Buffer</strong>: Vùng nhớ để lưu trữ dữ liệu tạm thời. Phải đọc/ghi dữ liệu qua Buffer.</p>
+<p><strong>Selector</strong>: Cho phép một thread giám sát nhiều Channel và xử lý các sự kiện I/O.</p>
+<img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=1000&auto=format&fit=crop" alt="NIO Components" style="max-width: 100%; height: auto; border-radius: 8px; margin: 20px 0;">
+<h3>3. Xây dựng NIO Server</h3>
+<p>```java<br/>import java.io.IOException;<br/>import java.net.InetSocketAddress;<br/>import java.nio.ByteBuffer;<br/>import java.nio.channels.*;<br/>import java.util.Iterator;<br/>import java.util.Set;</p>
+<p>public class NIOServer {<br/>    private static final int PORT = 8080;<br/>    private static final int BUFFER_SIZE = 256;</p>
+<p>public static void main(String[] args) {<br/>        try {<br/>            // Mở ServerSocketChannel<br/>            ServerSocketChannel serverChannel = ServerSocketChannel.open();<br/>            serverChannel.bind(new InetSocketAddress(PORT));<br/>            serverChannel.configureBlocking(false);</p>
+<p>// Tạo Selector<br/>            Selector selector = Selector.open();</p>
+<p>// Đăng ký ServerSocketChannel với Selector<br/>            serverChannel.register(selector, SelectionKey.OP_ACCEPT);</p>
+<p>System.out.println("NIO Server đang chạy trên port " + PORT);</p>
+<p>ByteBuffer buffer = ByteBuffer.allocate(BUFFER_SIZE);</p>
+<p>while (true) {<br/>                // Chờ sự kiện I/O<br/>                selector.select();</p>
+<p>// Lấy các key đã sẵn sàng<br/>                Set<SelectionKey> selectedKeys = selector.selectedKeys();<br/>                Iterator<SelectionKey> iterator = selectedKeys.iterator();</p>
+<p>while (iterator.hasNext()) {<br/>                    SelectionKey key = iterator.next();<br/>                    iterator.remove();</p>
+<p>if (key.isAcceptable()) {<br/>                        // Chấp nhận kết nối mới<br/>                        handleAccept(serverChannel, selector);<br/>                    } else if (key.isReadable()) {<br/>                        // Đọc dữ liệu<br/>                        handleRead(key, buffer);<br/>                    }<br/>                }<br/>            }<br/>        } catch (IOException e) {<br/>            e.printStackTrace();<br/>        }<br/>    }</p>
+<p>private static void handleAccept(ServerSocketChannel serverChannel, <br/>                                    Selector selector) throws IOException {<br/>        SocketChannel clientChannel = serverChannel.accept();<br/>        clientChannel.configureBlocking(false);<br/>        clientChannel.register(selector, SelectionKey.OP_READ);<br/>        System.out.println("Client kết nối: " + clientChannel.getRemoteAddress());<br/>    }</p>
+<p>private static void handleRead(SelectionKey key, ByteBuffer buffer) <br/>                                  throws IOException {<br/>        SocketChannel clientChannel = (SocketChannel) key.channel();<br/>        buffer.clear();</p>
+<p>int bytesRead = clientChannel.read(buffer);</p>
+<p>if (bytesRead == -1) {<br/>            // Client đóng kết nối<br/>            clientChannel.close();<br/>            System.out.println("Client ngắt kết nối");<br/>            return;<br/>        }</p>
+<p>if (bytesRead > 0) {<br/>            buffer.flip();<br/>            byte[] data = new byte[buffer.remaining()];<br/>            buffer.get(data);<br/>            String message = new String(data);</p>
+<p>System.out.println("Nhận: " + message);</p>
+<p>// Echo về client<br/>            buffer.rewind();<br/>            clientChannel.write(buffer);<br/>        }<br/>    }<br/>}<br/>```</p>
+<h3>4. Làm việc với ByteBuffer</h3>
+<p>ByteBuffer có các thuộc tính quan trọng:</p>
+<p>- <strong>capacity</strong>: Kích thước tối đa của buffer<br/>- <strong>position</strong>: Vị trí hiện tại<br/>- <strong>limit</strong>: Giới hạn đọc/ghi</p>
+<p>```java<br/>ByteBuffer buffer = ByteBuffer.allocate(1024);</p>
+<p>// Ghi dữ liệu vào buffer<br/>buffer.put("Hello".getBytes());</p>
+<p>// Chuyển từ write mode sang read mode<br/>buffer.flip();</p>
+<p>// Đọc dữ liệu từ buffer<br/>while (buffer.hasRemaining()) {<br/>    byte b = buffer.get();<br/>}</p>
+<p>// Xóa buffer để ghi lại<br/>buffer.clear();</p>
+<p>// Hoặc compact để giữ dữ liệu chưa đọc<br/>buffer.compact();<br/>```</p>
+<h3>5. NIO Client</h3>
+<p>```java<br/>import java.io.IOException;<br/>import java.net.InetSocketAddress;<br/>import java.nio.ByteBuffer;<br/>import java.nio.channels.SocketChannel;</p>
+<p>public class NIOClient {<br/>    public static void main(String[] args) {<br/>        try {<br/>            SocketChannel socketChannel = SocketChannel.open();<br/>            socketChannel.connect(new InetSocketAddress("localhost", 8080));</p>
+<p>// Gửi dữ liệu<br/>            String message = "Hello from NIO Client";<br/>            ByteBuffer buffer = ByteBuffer.wrap(message.getBytes());<br/>            socketChannel.write(buffer);</p>
+<p>// Nhận phản hồi<br/>            buffer.clear();<br/>            int bytesRead = socketChannel.read(buffer);</p>
+<p>if (bytesRead > 0) {<br/>                buffer.flip();<br/>                byte[] data = new byte[buffer.remaining()];<br/>                buffer.get(data);<br/>                System.out.println("Nhận: " + new String(data));<br/>            }</p>
+<p>socketChannel.close();<br/>        } catch (IOException e) {<br/>            e.printStackTrace();<br/>        }<br/>    }<br/>}<br/>```</p>
+<h3>6. Ưu điểm và nhược điểm</h3>
+<p><strong>Ưu điểm</strong>:<br/>- Xử lý nhiều kết nối với ít thread<br/>- Hiệu suất cao với nhiều kết nối đồng thời<br/>- Tiết kiệm tài nguyên hệ thống</p>
+<p><strong>Nhược điểm</strong>:<br/>- Code phức tạp hơn blocking I/O<br/>- Khó debug và maintain<br/>- Cần hiểu rõ về Buffer và Channel</p>
+<h3>7. Khi nào nên dùng NIO?</h3>
+<p>- Server cần xử lý hàng nghìn kết nối đồng thời<br/>- Các kết nối có lưu lượng thấp (chat, notification)<br/>- Cần tối ưu tài nguyên hệ thống</p>
+<p>Không nên dùng NIO khi:<br/>- Số lượng kết nối ít (dưới 100)<br/>- Xử lý logic phức tạp cho mỗi kết nối<br/>- Team thiếu kinh nghiệm với NIO</p>
+<p>Java NIO là công cụ mạnh mẽ để xây dựng server hiệu năng cao, có khả năng xử lý hàng nghìn kết nối đồng thời. Tuy nhiên, với sự phức tạp của nó, bạn nên cân nhắc sử dụng các framework như Netty hoặc Vert.x, được xây dựng trên nền tảng NIO nhưng cung cấp API dễ sử dụng hơn.</p>
+<p>Trong các bài tiếp theo, chúng ta sẽ chuyển sang JavaScript và Node.js, tìm hiểu cách xây dựng server với event-driven model tự nhiên của Node.</p>
+<p>---</p>
+<h3>Tài liệu tham khảo</h3>
+<p>- [Oracle Java NIO Tutorial](https://docs.oracle.com/javase/tutorial/essential/io/nio.html)<br/>- [Java NIO Selector](https://docs.oracle.com/javase/8/docs/api/java/nio/channels/Selector.html)<br/>- [Guide to Java NIO](https://www.baeldung.com/java-nio-selector)<br/>- [Java NIO vs IO](https://jenkov.com/tutorials/java-nio/nio-vs-io.html)</p>
+    </article>
+    <section class="social-section">
+      <div class="social-container">
+        <h2 data-i18n="social-title">X&#227; h&#7897;i</h2>
+        <div class="social-grid">
+          <a href="https://github.com/ThanhTra1409" target="_blank" class="social-card">
+            <i class="fab fa-github social-icon"></i>
+            <h3>GitHub</h3>
+            <p>@nttra204</p>
+          </a>
+          <a href="https://www.facebook.com/nguyen.thanh.tra.970568?locale=vi_VN" target="_blank" class="social-card">
+            <i class="fab fa-facebook social-icon"></i>
+            <h3>Facebook</h3>
+            <p>Nguy&#7877;n Thanh Tr&#224;</p>
+          </a>
+          <a href="https://www.instagram.com/nttra204_/?igsh=MXVlc3p1NG4zdnBidw%3D%3D&utm_source=qr" target="_blank" class="social-card">
+            <i class="fab fa-instagram social-icon"></i>
+            <h3>Instagram</h3>
+            <p>@nttra204_</p>
+          </a>
+          <a href="https://www.linkedin.com/in/thanh-tra-nguyen-84a46833a" target="_blank" class="social-card">
+            <i class="fab fa-linkedin social-icon"></i>
+            <h3>LinkedIn</h3>
+            <p>Nguy&#7877;n Thanh Tr&#224;</p>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer>
+    <div class="footer-content">
+      <div class="footer-brand">
+        <h3 data-i18n="site-title">Nguyễn Thanh Trà</h3>
+        <p class="footer-tagline" data-i18n="footer-tagline">Building scalable solutions with passion</p>
+      </div>
+      <div class="footer-contact">
+        <h4 data-i18n="contact-info">Th&#244;ng tin li&#234;n h&#7879;</h4>
+        <div class="contact-info-grid">
+          <div class="contact-info-item">
+            <i class="fas fa-envelope"></i>
+            <a href="mailto:ntra140924@gmail.com">ntra140924@gmail.com</a>
+          </div>
+          <div class="contact-info-item">
+            <i class="fas fa-phone"></i>
+            <a href="tel:0941779093">0941779093</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p><span data-i18n="footer-copyright">© 2025</span> <span data-i18n="site-title">Nguyễn Thanh Trà</span></p>
+      </div>
+    </div>
+  </footer>
+  <script src="/js/i18n.js"></script>
+  <script>
+  function toggleMenu(){
+    document.body.classList.toggle('menu-open');
+  }
+  </script>
+</body>
+</html>

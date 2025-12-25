@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Xử lý REST API với Express (Node.js) - Nguyễn Thanh Trà</title>
+  <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👨‍💻</text></svg>">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+  <div class="overlay" id="overlay">
+    <ul class="menu">
+      <li><a href="/" data-i18n="home">Home</a></li>
+      <li><a href="/posts/" data-i18n="blog">Blog</a></li>
+      <li><a href="/about/" data-i18n="about">About</a></li>
+    </ul>
+  </div>
+  <header>
+    <nav>
+      <div class="brand"><a href="/" data-i18n="site-title">Nguyễn Thanh Trà</a></div>
+      <ul>
+        <li><a href="/" data-i18n="home">Home</a></li>
+        <li><a href="/posts/" data-i18n="blog">Blog</a></li>
+        <li><a href="/about/" data-i18n="about">About</a></li>
+        <li class="lang-toggle-wrapper">
+          <div id="lang-switch" class="lang-switch" data-lang="vi">
+            <div class="lang-switch-slider"></div>
+            <button id="lang-vn" class="lang-btn">VN</button>
+            <button id="lang-en" class="lang-btn">EN</button>
+          </div>
+        </li>
+      </ul>
+      <div class="menu-toggle" onclick="toggleMenu()" aria-label="menu">☰</div>
+    </nav>
+  </header>
+  <main>
+    <article class="post">
+      <h1>Xử lý REST API với Express (Node.js)</h1>
+      <p class="meta">2025-12-14</p>
+      <div class="featured-image"><img src="https://images.unsplash.com/photo-1484417894907-623942c8ee29?w=800&auto=format&fit=crop" alt="Xử lý REST API với Express (Node.js)"></div>
+      <p>Express.js là framework web phổ biến nhất cho Node.js, cung cấp các công cụ đơn giản nhưng mạnh mẽ để xây dựng web server và REST API. Với cú pháp ngắn gọn và hệ sinh thái middleware phong phú, Express giúp developer tạo API nhanh chóng và hiệu quả.</p>
+<p>Bài viết này sẽ hướng dẫn xây dựng REST API hoàn chỉnh với Express, bao gồm routing, middleware, error handling, và các best practices.</p>
+<img src="https://images.unsplash.com/photo-1484417894907-623942c8ee29?w=1200&auto=format&fit=crop" alt="REST API Development" style="max-width: 100%; height: auto; border-radius: 8px; margin: 20px 0;">
+<h3>1. Cài đặt và Setup cơ bản</h3>
+<p>``<code>bash<br/>npm init -y<br/>npm install express<br/></code>``</p>
+<h4>Server cơ bản</h4>
+<p>```javascript<br/>const express = require('express');<br/>const app = express();</p>
+<p>// Middleware để parse JSON<br/>app.use(express.json());</p>
+<p>// Middleware để parse URL-encoded data<br/>app.use(express.urlencoded({ extended: true }));</p>
+<p>// Basic route<br/>app.get('/', (req, res) => {<br/>  res.json({ message: 'Welcome to API' });<br/>});</p>
+<p>const PORT = 3000;<br/>app.listen(PORT, () => {<br/>  console.log(<code>Server running on http://localhost:${PORT}</code>);<br/>});<br/>```</p>
+<h3>2. CRUD REST API</h3>
+<p>```javascript<br/>const express = require('express');<br/>const app = express();</p>
+<p>app.use(express.json());</p>
+<p>// In-memory database<br/>let users = [<br/>  { id: 1, name: 'John Doe', email: 'john@example.com' },<br/>  { id: 2, name: 'Jane Smith', email: 'jane@example.com' }<br/>];</p>
+<p>let nextId = 3;</p>
+<p>// GET all users<br/>app.get('/api/users', (req, res) => {<br/>  res.json(users);<br/>});</p>
+<p>// GET user by ID<br/>app.get('/api/users/:id', (req, res) => {<br/>  const id = parseInt(req.params.id);<br/>  const user = users.find(u => u.id === id);</p>
+<p>if (!user) {<br/>    return res.status(404).json({ error: 'User not found' });<br/>  }</p>
+<p>res.json(user);<br/>});</p>
+<p>// POST create new user<br/>app.post('/api/users', (req, res) => {<br/>  const { name, email } = req.body;</p>
+<p>if (!name || !email) {<br/>    return res.status(400).json({ error: 'Name and email are required' });<br/>  }</p>
+<p>const newUser = {<br/>    id: nextId++,<br/>    name,<br/>    email<br/>  };</p>
+<p>users.push(newUser);<br/>  res.status(201).json(newUser);<br/>});</p>
+<p>// PUT update user<br/>app.put('/api/users/:id', (req, res) => {<br/>  const id = parseInt(req.params.id);<br/>  const { name, email } = req.body;</p>
+<p>const userIndex = users.findIndex(u => u.id === id);</p>
+<p>if (userIndex === -1) {<br/>    return res.status(404).json({ error: 'User not found' });<br/>  }</p>
+<p>users[userIndex] = { id, name, email };<br/>  res.json(users[userIndex]);<br/>});</p>
+<p>// PATCH partial update<br/>app.patch('/api/users/:id', (req, res) => {<br/>  const id = parseInt(req.params.id);<br/>  const user = users.find(u => u.id === id);</p>
+<p>if (!user) {<br/>    return res.status(404).json({ error: 'User not found' });<br/>  }</p>
+<p>Object.assign(user, req.body);<br/>  res.json(user);<br/>});</p>
+<p>// DELETE user<br/>app.delete('/api/users/:id', (req, res) => {<br/>  const id = parseInt(req.params.id);<br/>  const userIndex = users.findIndex(u => u.id === id);</p>
+<p>if (userIndex === -1) {<br/>    return res.status(404).json({ error: 'User not found' });<br/>  }</p>
+<p>users.splice(userIndex, 1);<br/>  res.status(204).send();<br/>});</p>
+<p>app.listen(3000, () => {<br/>  console.log('API server running on port 3000');<br/>});<br/>```</p>
+<h3>3. Middleware</h3>
+<p>``<code>javascript<br/>// Logging middleware<br/>app.use((req, res, next) => {<br/>  console.log(</code>${new Date().toISOString()} - ${req.method} ${req.url}`);<br/>  next();<br/>});</p>
+<p>// Authentication middleware<br/>function authenticate(req, res, next) {<br/>  const token = req.headers['authorization'];</p>
+<p>if (!token) {<br/>    return res.status(401).json({ error: 'No token provided' });<br/>  }</p>
+<p>// Verify token (giả sử)<br/>  if (token === 'Bearer valid-token') {<br/>    req.userId = 1; // Set user info<br/>    next();<br/>  } else {<br/>    res.status(403).json({ error: 'Invalid token' });<br/>  }<br/>}</p>
+<p>// Sử dụng middleware cho specific routes<br/>app.get('/api/protected', authenticate, (req, res) => {<br/>  res.json({ message: 'This is protected', userId: req.userId });<br/>});</p>
+<p>// Validation middleware<br/>function validateUser(req, res, next) {<br/>  const { name, email } = req.body;</p>
+<p>if (!name || name.length < 3) {<br/>    return res.status(400).json({ error: 'Name must be at least 3 characters' });<br/>  }</p>
+<p>if (!email || !email.includes('@')) {<br/>    return res.status(400).json({ error: 'Valid email is required' });<br/>  }</p>
+<p>next();<br/>}</p>
+<p>app.post('/api/users', validateUser, (req, res) => {<br/>  // Tạo user...<br/>});<br/>```</p>
+<h3>4. Router và Cấu trúc dự án</h3>
+<p>#### routes/users.js<br/>```javascript<br/>const express = require('express');<br/>const router = express.Router();</p>
+<p>router.get('/', (req, res) => {<br/>  res.json({ message: 'Get all users' });<br/>});</p>
+<p>router.get('/:id', (req, res) => {<br/>  res.json({ message: <code>Get user ${req.params.id}</code> });<br/>});</p>
+<p>router.post('/', (req, res) => {<br/>  res.json({ message: 'Create user' });<br/>});</p>
+<p>router.put('/:id', (req, res) => {<br/>  res.json({ message: <code>Update user ${req.params.id}</code> });<br/>});</p>
+<p>router.delete('/:id', (req, res) => {<br/>  res.json({ message: <code>Delete user ${req.params.id}</code> });<br/>});</p>
+<p>module.exports = router;<br/>```</p>
+<p>#### routes/posts.js<br/>```javascript<br/>const express = require('express');<br/>const router = express.Router();</p>
+<p>router.get('/', (req, res) => {<br/>  res.json({ message: 'Get all posts' });<br/>});</p>
+<p>router.post('/', (req, res) => {<br/>  res.json({ message: 'Create post' });<br/>});</p>
+<p>module.exports = router;<br/>```</p>
+<p>#### app.js<br/>```javascript<br/>const express = require('express');<br/>const userRoutes = require('./routes/users');<br/>const postRoutes = require('./routes/posts');</p>
+<p>const app = express();</p>
+<p>app.use(express.json());</p>
+<p>// Mount routers<br/>app.use('/api/users', userRoutes);<br/>app.use('/api/posts', postRoutes);</p>
+<p>app.listen(3000, () => {<br/>  console.log('Server running');<br/>});<br/>```</p>
+<h3>5. Error Handling</h3>
+<p>```javascript<br/>// Custom error class<br/>class AppError extends Error {<br/>  constructor(message, statusCode) {<br/>    super(message);<br/>    this.statusCode = statusCode;<br/>    this.isOperational = true;<br/>  }<br/>}</p>
+<p>// Async error handler wrapper<br/>const asyncHandler = (fn) => (req, res, next) => {<br/>  Promise.resolve(fn(req, res, next)).catch(next);<br/>};</p>
+<p>// Route với error handling<br/>app.get('/api/users/:id', asyncHandler(async (req, res, next) => {<br/>  const user = await getUserById(req.params.id);</p>
+<p>if (!user) {<br/>    throw new AppError('User not found', 404);<br/>  }</p>
+<p>res.json(user);<br/>}));</p>
+<p>// 404 handler<br/>app.use((req, res, next) => {<br/>  res.status(404).json({ error: 'Route not found' });<br/>});</p>
+<p>// Global error handler<br/>app.use((err, req, res, next) => {<br/>  console.error(err.stack);</p>
+<p>const statusCode = err.statusCode || 500;<br/>  const message = err.isOperational ? err.message : 'Internal server error';</p>
+<p>res.status(statusCode).json({<br/>    error: message,<br/>    ...(process.env.NODE_ENV === 'development' && { stack: err.stack })<br/>  });<br/>});<br/>```</p>
+<h3>6. Query Parameters và Pagination</h3>
+<p>```javascript<br/>app.get('/api/users', (req, res) => {<br/>  // Query parameters: /api/users?page=1&limit=10&sort=name<br/>  const page = parseInt(req.query.page) || 1;<br/>  const limit = parseInt(req.query.limit) || 10;<br/>  const sort = req.query.sort || 'id';</p>
+<p>const startIndex = (page - 1) <em> limit;<br/>  const endIndex = page </em> limit;</p>
+<p>let result = [...users];</p>
+<p>// Sorting<br/>  result.sort((a, b) => a[sort] > b[sort] ? 1 : -1);</p>
+<p>// Pagination<br/>  const paginatedUsers = result.slice(startIndex, endIndex);</p>
+<p>res.json({<br/>    data: paginatedUsers,<br/>    page: page,<br/>    limit: limit,<br/>    total: users.length,<br/>    totalPages: Math.ceil(users.length / limit)<br/>  });<br/>});<br/>```</p>
+<h3>7. CORS và Security</h3>
+<p>```javascript<br/>const cors = require('cors');<br/>const helmet = require('helmet');<br/>const rateLimit = require('express-rate-limit');</p>
+<p>// CORS<br/>app.use(cors({<br/>  origin: 'http://localhost:3001',<br/>  credentials: true<br/>}));</p>
+<p>// Security headers<br/>app.use(helmet());</p>
+<p>// Rate limiting<br/>const limiter = rateLimit({<br/>  windowMs: 15 <em> 60 </em> 1000, // 15 minutes<br/>  max: 100 // limit each IP to 100 requests per windowMs<br/>});</p>
+<p>app.use('/api/', limiter);<br/>```</p>
+<p>Express.js là framework mạnh mẽ và linh hoạt để xây dựng REST API. Với các khái niệm cơ bản như routing, middleware, error handling, bạn có thể tạo API chuyên nghiệp và scalable.</p>
+<p>Các best practices bao gồm: sử dụng Router để tổ chức code, implement error handling đầy đủ, validation dữ liệu, và bảo mật API với CORS, helmet, và rate limiting.</p>
+<p>---</p>
+<h3>Tài liệu tham khảo</h3>
+<p>- [Express.js Official Documentation](https://expressjs.com/)<br/>- [Express.js API Reference](https://expressjs.com/en/4x/api.html)<br/>- [REST API Design Best Practices](https://www.freecodecamp.org/news/rest-api-best-practices-rest-endpoint-design-examples/)<br/>- [Building RESTful APIs with Express](https://www.toptal.com/nodejs/secure-rest-api-in-nodejs)</p>
+    </article>
+    <section class="social-section">
+      <div class="social-container">
+        <h2 data-i18n="social-title">X&#227; h&#7897;i</h2>
+        <div class="social-grid">
+          <a href="https://github.com/ThanhTra1409" target="_blank" class="social-card">
+            <i class="fab fa-github social-icon"></i>
+            <h3>GitHub</h3>
+            <p>@nttra204</p>
+          </a>
+          <a href="https://www.facebook.com/nguyen.thanh.tra.970568?locale=vi_VN" target="_blank" class="social-card">
+            <i class="fab fa-facebook social-icon"></i>
+            <h3>Facebook</h3>
+            <p>Nguy&#7877;n Thanh Tr&#224;</p>
+          </a>
+          <a href="https://www.instagram.com/nttra204_/?igsh=MXVlc3p1NG4zdnBidw%3D%3D&utm_source=qr" target="_blank" class="social-card">
+            <i class="fab fa-instagram social-icon"></i>
+            <h3>Instagram</h3>
+            <p>@nttra204_</p>
+          </a>
+          <a href="https://www.linkedin.com/in/thanh-tra-nguyen-84a46833a" target="_blank" class="social-card">
+            <i class="fab fa-linkedin social-icon"></i>
+            <h3>LinkedIn</h3>
+            <p>Nguy&#7877;n Thanh Tr&#224;</p>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer>
+    <div class="footer-content">
+      <div class="footer-brand">
+        <h3 data-i18n="site-title">Nguyễn Thanh Trà</h3>
+        <p class="footer-tagline" data-i18n="footer-tagline">Building scalable solutions with passion</p>
+      </div>
+      <div class="footer-contact">
+        <h4 data-i18n="contact-info">Th&#244;ng tin li&#234;n h&#7879;</h4>
+        <div class="contact-info-grid">
+          <div class="contact-info-item">
+            <i class="fas fa-envelope"></i>
+            <a href="mailto:ntra140924@gmail.com">ntra140924@gmail.com</a>
+          </div>
+          <div class="contact-info-item">
+            <i class="fas fa-phone"></i>
+            <a href="tel:0941779093">0941779093</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p><span data-i18n="footer-copyright">© 2025</span> <span data-i18n="site-title">Nguyễn Thanh Trà</span></p>
+      </div>
+    </div>
+  </footer>
+  <script src="/js/i18n.js"></script>
+  <script>
+  function toggleMenu(){
+    document.body.classList.toggle('menu-open');
+  }
+  </script>
+</body>
+</html>

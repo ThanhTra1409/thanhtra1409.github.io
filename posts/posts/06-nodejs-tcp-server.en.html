@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Node.js: TCP Server with the `net` Module - Nguyễn Thanh Trà</title>
+  <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👨‍💻</text></svg>">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body data-lang="en">
+  <div class="overlay" id="overlay">
+    <ul class="menu">
+      <li><a href="/" data-i18n="home">Home</a></li>
+      <li><a href="/posts/" data-i18n="blog">Blog</a></li>
+      <li><a href="/about/" data-i18n="about">About</a></li>
+    </ul>
+  </div>
+  <header>
+    <nav>
+      <div class="brand"><a href="/" data-i18n="site-title">Nguyễn Thanh Trà</a></div>
+      <ul>
+        <li><a href="/" data-i18n="home">Home</a></li>
+        <li><a href="/posts/" data-i18n="blog">Blog</a></li>
+        <li><a href="/about/" data-i18n="about">About</a></li>
+        <li class="lang-toggle-wrapper">
+          <div id="lang-switch" class="lang-switch" data-lang="en">
+            <div class="lang-switch-slider"></div>
+            <button id="lang-vn" class="lang-btn">VN</button>
+            <button id="lang-en" class="lang-btn">EN</button>
+          </div>
+        </li>
+      </ul>
+      <div class="menu-toggle" onclick="toggleMenu()" aria-label="menu">☰</div>
+    </nav>
+  </header>
+  <main>
+    <article class="post">
+      <h1>Node.js: TCP Server with the `net` Module</h1>
+      <p class="meta">2025-12-09</p>
+      <div class="featured-image"><img src="https://images.unsplash.com/photo-1618401471353-b98afee0b2eb?w=800&auto=format&fit=crop" alt="Node.js: TCP server với module `net`"></div>
+      <p>Node.js with its event-driven architecture and non-blocking I/O is an excellent platform for building high-performance network servers. The <code>net</code> module built into Node.js provides APIs to create TCP servers and clients simply.</p>
+<p>Unlike the multithreading model in Java, Node.js uses a single-threaded event loop to handle thousands of concurrent connections, helping save resources and scale easily.</p>
+<img src="https://images.unsplash.com/photo-1618401471353-b98afee0b2eb?w=1200&auto=format&fit=crop" alt="Node.js TCP Server" style="max-width: 100%; height: auto; border-radius: 8px; margin: 20px 0;">
+<h3>1. Creating a Basic TCP Server</h3>
+<p>```javascript<br/>const net = require('net');</p>
+<p>// Create TCP server<br/>const server = net.createServer((socket) => {<br/>  console.log('Client connected:', socket.remoteAddress, socket.remotePort);</p>
+<p>// Send welcome message<br/>  socket.write('Welcome to TCP Server!\n');</p>
+<p>// Handle data from client<br/>  socket.on('data', (data) => {<br/>    console.log('Received from client:', data.toString());</p>
+<p>// Echo back to client<br/>    socket.write(<code>Echo: ${data}</code>);<br/>  });</p>
+<p>// Handle when client disconnects<br/>  socket.on('end', () => {<br/>    console.log('Client disconnected');<br/>  });</p>
+<p>// Handle errors<br/>  socket.on('error', (err) => {<br/>    console.error('Socket error:', err.message);<br/>  });<br/>});</p>
+<p>// Listen on port 8080<br/>server.listen(8080, () => {<br/>  console.log('TCP Server running on port 8080');<br/>});</p>
+<p>// Handle server errors<br/>server.on('error', (err) => {<br/>  console.error('Server error:', err.message);<br/>});<br/>```</p>
+<h3>2. TCP Client</h3>
+<p>```javascript<br/>const net = require('net');</p>
+<p>// Create TCP client<br/>const client = net.createConnection({ port: 8080, host: 'localhost' }, () => {<br/>  console.log('Connected to server');<br/>  client.write('Hello server!');<br/>});</p>
+<p>// Receive data from server<br/>client.on('data', (data) => {<br/>  console.log('Received from server:', data.toString());<br/>  // client.end(); // Close connection after receiving<br/>});</p>
+<p>// Handle when disconnected<br/>client.on('end', () => {<br/>  console.log('Disconnected');<br/>});</p>
+<p>// Handle errors<br/>client.on('error', (err) => {<br/>  console.error('Error:', err.message);<br/>});<br/>```</p>
+<h3>3. Echo Server with Multiple Client Management</h3>
+<p>```javascript<br/>const net = require('net');</p>
+<p>class EchoServer {<br/>  constructor(port) {<br/>    this.port = port;<br/>    this.clients = new Set();<br/>    this.server = null;<br/>  }</p>
+<p>start() {<br/>    this.server = net.createServer((socket) => {<br/>      this.handleConnection(socket);<br/>    });</p>
+<p>this.server.listen(this.port, () => {<br/>      console.log(<code>Echo Server running on port ${this.port}</code>);<br/>    });</p>
+<p>this.server.on('error', (err) => {<br/>      console.error('Server error:', err);<br/>    });<br/>  }</p>
+<p>handleConnection(socket) {<br/>    const clientId = <code>${socket.remoteAddress}:${socket.remotePort}</code>;<br/>    console.log(<code>[${clientId}] New connection</code>);</p>
+<p>// Add client to list<br/>    this.clients.add(socket);</p>
+<p>// Send welcome message<br/>    socket.write(<code>Welcome! Currently ${this.clients.size} clients online\n</code>);</p>
+<p>// Handle data<br/>    socket.on('data', (data) => {<br/>      const message = data.toString().trim();<br/>      console.log(<code>[${clientId}] ${message}</code>);</p>
+<p>// Echo with timestamp<br/>      const response = <code>[${new Date().toISOString()}] Echo: ${message}\n</code>;<br/>      socket.write(response);<br/>    });</p>
+<p>// Handle disconnection<br/>    socket.on('end', () => {<br/>      console.log(<code>[${clientId}] Disconnected</code>);<br/>      this.clients.delete(socket);<br/>    });</p>
+<p>// Handle errors<br/>    socket.on('error', (err) => {<br/>      console.error(<code>[${clientId}] Error:</code>, err.message);<br/>      this.clients.delete(socket);<br/>    });<br/>  }</p>
+<p>broadcast(message) {<br/>    const data = <code>[Broadcast] ${message}\n</code>;<br/>    for (const client of this.clients) {<br/>      client.write(data);<br/>    }<br/>  }</p>
+<p>stop() {<br/>    // Close all connections<br/>    for (const client of this.clients) {<br/>      client.end();<br/>    }</p>
+<p>// Close server<br/>    this.server.close(() => {<br/>      console.log('Server closed');<br/>    });<br/>  }<br/>}</p>
+<p>// Usage<br/>const server = new EchoServer(8080);<br/>server.start();</p>
+<p>// Broadcast message every 30 seconds<br/>setInterval(() => {<br/>  server.broadcast(<code>Server uptime: ${process.uptime()}s</code>);<br/>}, 30000);<br/>```</p>
+<h3>4. Chat Server</h3>
+<p>```javascript<br/>const net = require('net');</p>
+<p>class ChatServer {<br/>  constructor(port) {<br/>    this.port = port;<br/>    this.clients = new Map(); // Map<socket, username><br/>    this.server = null;<br/>  }</p>
+<p>start() {<br/>    this.server = net.createServer((socket) => {<br/>      this.handleClient(socket);<br/>    });</p>
+<p>this.server.listen(this.port, () => {<br/>      console.log(<code>Chat Server running on port ${this.port}</code>);<br/>    });<br/>  }</p>
+<p>handleClient(socket) {<br/>    // Request username<br/>    socket.write('Enter your username: ');</p>
+<p>let username = null;</p>
+<p>socket.on('data', (data) => {<br/>      const message = data.toString().trim();</p>
+<p>// If no username yet, set username<br/>      if (!username) {<br/>        username = message;<br/>        this.clients.set(socket, username);</p>
+<p>socket.write(<code>Welcome ${username}!\n</code>);<br/>        this.broadcast(<code>${username} joined the chat\n</code>, socket);</p>
+<p>console.log(<code>${username} joined</code>);<br/>        return;<br/>      }</p>
+<p>// Handle commands<br/>      if (message.startsWith('/')) {<br/>        this.handleCommand(socket, message);<br/>        return;<br/>      }</p>
+<p>// Broadcast message<br/>      const chatMessage = <code>[${username}]: ${message}\n</code>;<br/>      console.log(chatMessage.trim());<br/>      this.broadcast(chatMessage);<br/>    });</p>
+<p>socket.on('end', () => {<br/>      if (username) {<br/>        console.log(<code>${username} left</code>);<br/>        this.broadcast(<code>${username} left the chat\n</code>, socket);<br/>        this.clients.delete(socket);<br/>      }<br/>    });</p>
+<p>socket.on('error', (err) => {<br/>      console.error('Socket error:', err.message);<br/>      this.clients.delete(socket);<br/>    });<br/>  }</p>
+<p>handleCommand(socket, command) {<br/>    const username = this.clients.get(socket);</p>
+<p>if (command === '/users') {<br/>      const userList = Array.from(this.clients.values()).join(', ');<br/>      socket.write(<code>Online users: ${userList}\n</code>);<br/>    } else if (command === '/help') {<br/>      socket.write('Commands:\n');<br/>      socket.write('/users - View user list\n');<br/>      socket.write('/help - Show help\n');<br/>      socket.write('/quit - Exit chat\n');<br/>    } else if (command === '/quit') {<br/>      socket.end();<br/>    } else {<br/>      socket.write('Unknown command. Type /help for help\n');<br/>    }<br/>  }</p>
+<p>broadcast(message, excludeSocket = null) {<br/>    for (const [socket, username] of this.clients) {<br/>      if (socket !== excludeSocket) {<br/>        socket.write(message);<br/>      }<br/>    }<br/>  }<br/>}</p>
+<p>// Start server<br/>const chatServer = new ChatServer(8080);<br/>chatServer.start();<br/>```</p>
+<h3>5. Buffer and Encoding Handling</h3>
+<p>```javascript<br/>const net = require('net');</p>
+<p>const server = net.createServer((socket) => {<br/>  // Set encoding to automatically convert buffer to string<br/>  socket.setEncoding('utf8');</p>
+<p>socket.on('data', (data) => {<br/>    // data is already a string, no need for toString()<br/>    console.log('Received:', data);<br/>  });</p>
+<p>// Or work directly with Buffer<br/>  socket.on('data', (buffer) => {<br/>    // buffer is a Buffer object<br/>    console.log('Buffer length:', buffer.length);<br/>    console.log('Hex:', buffer.toString('hex'));<br/>    console.log('UTF-8:', buffer.toString('utf8'));<br/>    console.log('Base64:', buffer.toString('base64'));<br/>  });<br/>});<br/>```</p>
+<h3>6. Keep-alive and Timeout</h3>
+<p>```javascript<br/>const server = net.createServer((socket) => {<br/>  // Set 30 second timeout<br/>  socket.setTimeout(30000);</p>
+<p>// Handle timeout<br/>  socket.on('timeout', () => {<br/>    console.log('Socket timeout');<br/>    socket.end('Timeout - closing connection\n');<br/>  });</p>
+<p>// Enable keep-alive<br/>  socket.setKeepAlive(true, 60000); // 60 seconds</p>
+<p>socket.on('data', (data) => {<br/>    // Reset timeout when data arrives<br/>    socket.setTimeout(30000);<br/>    // Process data...<br/>  });<br/>});<br/>```</p>
+<h3>7. Comparison with Java Thread-based Model</h3>
+<p><strong>Node.js (Event-driven)</strong>:<br/>- Single-threaded event loop<br/>- Non-blocking I/O<br/>- Handle many connections with few resources<br/>- Suitable for I/O-intensive applications</p>
+<p><strong>Java (Thread-based)</strong>:<br/>- Each connection = one thread<br/>- Blocking I/O (unless using NIO)<br/>- Resource-intensive with many connections<br/>- Suitable for CPU-intensive applications</p>
+<p>Node.js's <code>net</code> module provides simple but powerful APIs to build TCP servers. With event-driven architecture, Node.js can efficiently handle thousands of concurrent connections, making it very suitable for realtime applications like chat, game servers, or IoT applications.</p>
+<p>In the next article, we'll explore Socket.IO - a library built on WebSocket that makes developing realtime applications much easier.</p>
+<p>---</p>
+<h3>References</h3>
+<p>- [Node.js net Module Documentation](https://nodejs.org/api/net.html)<br/>- [Node.js Stream API](https://nodejs.org/api/stream.html)<br/>- [Building TCP Server with Node.js](https://nodejs.dev/learn/the-nodejs-net-module)<br/>- [Node.js Network Programming](https://www.packtpub.com/product/nodejs-high-performance/9781785286148)</p>
+    </article>
+    <section class="social-section">
+      <div class="social-container">
+        <h2 data-i18n="social-title">X&#227; h&#7897;i</h2>
+        <div class="social-grid">
+          <a href="https://github.com/ThanhTra1409" target="_blank" class="social-card">
+            <i class="fab fa-github social-icon"></i>
+            <h3>GitHub</h3>
+            <p>@nttra204</p>
+          </a>
+          <a href="https://www.facebook.com/nguyen.thanh.tra.970568?locale=vi_VN" target="_blank" class="social-card">
+            <i class="fab fa-facebook social-icon"></i>
+            <h3>Facebook</h3>
+            <p>Nguy&#7877;n Thanh Tr&#224;</p>
+          </a>
+          <a href="https://www.instagram.com/nttra204_/?igsh=MXVlc3p1NG4zdnBidw%3D%3D&utm_source=qr" target="_blank" class="social-card">
+            <i class="fab fa-instagram social-icon"></i>
+            <h3>Instagram</h3>
+            <p>@nttra204_</p>
+          </a>
+          <a href="https://www.linkedin.com/in/thanh-tra-nguyen-84a46833a" target="_blank" class="social-card">
+            <i class="fab fa-linkedin social-icon"></i>
+            <h3>LinkedIn</h3>
+            <p>Nguy&#7877;n Thanh Tr&#224;</p>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer>
+    <div class="footer-content">
+      <div class="footer-brand">
+        <h3 data-i18n="site-title">Nguyễn Thanh Trà</h3>
+        <p class="footer-tagline" data-i18n="footer-tagline">Building scalable solutions with passion</p>
+      </div>
+      <div class="footer-contact">
+        <h4 data-i18n="contact-info">Th&#244;ng tin li&#234;n h&#7879;</h4>
+        <div class="contact-info-grid">
+          <div class="contact-info-item">
+            <i class="fas fa-envelope"></i>
+            <a href="mailto:ntra140924@gmail.com">ntra140924@gmail.com</a>
+          </div>
+          <div class="contact-info-item">
+            <i class="fas fa-phone"></i>
+            <a href="tel:0941779093">0941779093</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p><span data-i18n="footer-copyright">© 2025</span> <span data-i18n="site-title">Nguyễn Thanh Trà</span></p>
+      </div>
+    </div>
+  </footer>
+  <script src="/js/i18n.js"></script>
+  <script>
+  function toggleMenu(){
+    document.body.classList.toggle('menu-open');
+  }
+  </script>
+</body>
+</html>

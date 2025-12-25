@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Building Basic HTTP Client and Server with Java - Nguyễn Thanh Trà</title>
+  <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👨‍💻</text></svg>">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body data-lang="en">
+  <div class="overlay" id="overlay">
+    <ul class="menu">
+      <li><a href="/" data-i18n="home">Home</a></li>
+      <li><a href="/posts/" data-i18n="blog">Blog</a></li>
+      <li><a href="/about/" data-i18n="about">About</a></li>
+    </ul>
+  </div>
+  <header>
+    <nav>
+      <div class="brand"><a href="/" data-i18n="site-title">Nguyễn Thanh Trà</a></div>
+      <ul>
+        <li><a href="/" data-i18n="home">Home</a></li>
+        <li><a href="/posts/" data-i18n="blog">Blog</a></li>
+        <li><a href="/about/" data-i18n="about">About</a></li>
+        <li class="lang-toggle-wrapper">
+          <div id="lang-switch" class="lang-switch" data-lang="en">
+            <div class="lang-switch-slider"></div>
+            <button id="lang-vn" class="lang-btn">VN</button>
+            <button id="lang-en" class="lang-btn">EN</button>
+          </div>
+        </li>
+      </ul>
+      <div class="menu-toggle" onclick="toggleMenu()" aria-label="menu">☰</div>
+    </nav>
+  </header>
+  <main>
+    <article class="post">
+      <h1>Building Basic HTTP Client and Server with Java</h1>
+      <p class="meta">2025-12-05</p>
+      <div class="featured-image"><img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&auto=format&fit=crop" alt="Xây dựng HTTP client và server cơ bản bằng Java"></div>
+      <p>HTTP is the foundational protocol of the web, used to transmit data between client and server. In Java, we can easily create HTTP clients to call APIs and build simple HTTP servers for learning or testing purposes.</p>
+<p>This article will guide you through using <code>HttpClient</code> (Java 11+) to make HTTP requests and create a basic HTTP server with <code>com.sun.net.httpserver.HttpServer</code>.</p>
+<img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1200&auto=format&fit=crop" alt="HTTP Communication" style="max-width: 100%; height: auto; border-radius: 8px; margin: 20px 0;">
+<h3>1. HTTP Client with Java 11+</h3>
+<p>Java 11 introduced <code>java.net.http.HttpClient</code> - a modern API for making HTTP requests.</p>
+<h4>GET Request</h4>
+<p>```java<br/>import java.net.URI;<br/>import java.net.http.HttpClient;<br/>import java.net.http.HttpRequest;<br/>import java.net.http.HttpResponse;<br/>import java.io.IOException;</p>
+<p>public class HttpClientExample {<br/>    public static void main(String[] args) {<br/>        try {<br/>            // Create HttpClient<br/>            HttpClient client = HttpClient.newHttpClient();</p>
+<p>// Create HttpRequest<br/>            HttpRequest request = HttpRequest.newBuilder()<br/>                .uri(URI.create("https://jsonplaceholder.typicode.com/posts/1"))<br/>                .GET()<br/>                .build();</p>
+<p>// Send request and receive response<br/>            HttpResponse<String> response = client.send(request, <br/>                HttpResponse.BodyHandlers.ofString());</p>
+<p>// Process response<br/>            System.out.println("Status Code: " + response.statusCode());<br/>            System.out.println("Body: " + response.body());</p>
+<p>} catch (IOException | InterruptedException e) {<br/>            e.printStackTrace();<br/>        }<br/>    }<br/>}<br/>```</p>
+<h4>POST Request with JSON</h4>
+<p>```java<br/>import java.net.http.HttpClient;<br/>import java.net.http.HttpRequest;<br/>import java.net.http.HttpResponse;<br/>import java.net.URI;</p>
+<p>public class HttpPostExample {<br/>    public static void main(String[] args) {<br/>        try {<br/>            HttpClient client = HttpClient.newHttpClient();</p>
+<p>// Create JSON body<br/>            String jsonBody = """{<br/>                "title": "foo",<br/>                "body": "bar",<br/>                "userId": 1<br/>            }""";</p>
+<p>HttpRequest request = HttpRequest.newBuilder()<br/>                .uri(URI.create("https://jsonplaceholder.typicode.com/posts"))<br/>                .header("Content-Type", "application/json")<br/>                .POST(HttpRequest.BodyPublishers.ofString(jsonBody))<br/>                .build();</p>
+<p>HttpResponse<String> response = client.send(request,<br/>                HttpResponse.BodyHandlers.ofString());</p>
+<p>System.out.println("Status: " + response.statusCode());<br/>            System.out.println("Response: " + response.body());</p>
+<p>} catch (Exception e) {<br/>            e.printStackTrace();<br/>        }<br/>    }<br/>}<br/>```</p>
+<h4>Asynchronous Request</h4>
+<p>```java<br/>import java.net.http.*;<br/>import java.net.URI;<br/>import java.util.concurrent.CompletableFuture;</p>
+<p>public class AsyncHttpExample {<br/>    public static void main(String[] args) {<br/>        HttpClient client = HttpClient.newHttpClient();</p>
+<p>HttpRequest request = HttpRequest.newBuilder()<br/>            .uri(URI.create("https://jsonplaceholder.typicode.com/posts/1"))<br/>            .build();</p>
+<p>// Send async request<br/>        CompletableFuture<HttpResponse<String>> responseFuture = <br/>            client.sendAsync(request, HttpResponse.BodyHandlers.ofString());</p>
+<p>responseFuture.thenApply(HttpResponse::body)<br/>            .thenAccept(System.out::println)<br/>            .join();<br/>    }<br/>}<br/>```</p>
+<h3>2. Building an HTTP Server</h3>
+<p>Java provides <code>com.sun.net.httpserver.HttpServer</code> to create simple HTTP servers.</p>
+<p>```java<br/>import com.sun.net.httpserver.HttpServer;<br/>import com.sun.net.httpserver.HttpHandler;<br/>import com.sun.net.httpserver.HttpExchange;</p>
+<p>import java.io.IOException;<br/>import java.io.OutputStream;<br/>import java.net.InetSocketAddress;</p>
+<p>public class SimpleHttpServer {<br/>    public static void main(String[] args) throws IOException {<br/>        // Create HTTP server on port 8080<br/>        HttpServer server = HttpServer.create(<br/>            new InetSocketAddress(8080), 0);</p>
+<p>// Register handlers<br/>        server.createContext("/", new RootHandler());<br/>        server.createContext("/api/users", new UsersHandler());<br/>        server.createContext("/api/posts", new PostsHandler());</p>
+<p>// Start server<br/>        server.setExecutor(null); // Use default executor<br/>        server.start();</p>
+<p>System.out.println("Server running on http://localhost:8080");<br/>    }<br/>}</p>
+<p>class RootHandler implements HttpHandler {<br/>    @Override<br/>    public void handle(HttpExchange exchange) throws IOException {<br/>        String response = "Welcome to Simple HTTP Server!";<br/>        exchange.sendResponseHeaders(200, response.length());<br/>        OutputStream os = exchange.getResponseBody();<br/>        os.write(response.getBytes());<br/>        os.close();<br/>    }<br/>}</p>
+<p>class UsersHandler implements HttpHandler {<br/>    @Override<br/>    public void handle(HttpExchange exchange) throws IOException {<br/>        String method = exchange.getRequestMethod();</p>
+<p>if ("GET".equals(method)) {<br/>            handleGet(exchange);<br/>        } else if ("POST".equals(method)) {<br/>            handlePost(exchange);<br/>        } else {<br/>            exchange.sendResponseHeaders(405, -1); // Method Not Allowed<br/>        }<br/>    }</p>
+<p>private void handleGet(HttpExchange exchange) throws IOException {<br/>        String jsonResponse = """[<br/>            {"id": 1, "name": "John Doe"},<br/>            {"id": 2, "name": "Jane Smith"}<br/>        ]""";</p>
+<p>exchange.getResponseHeaders().add("Content-Type", "application/json");<br/>        exchange.sendResponseHeaders(200, jsonResponse.length());<br/>        OutputStream os = exchange.getResponseBody();<br/>        os.write(jsonResponse.getBytes());<br/>        os.close();<br/>    }</p>
+<p>private void handlePost(HttpExchange exchange) throws IOException {<br/>        // Read request body<br/>        String requestBody = new String(<br/>            exchange.getRequestBody().readAllBytes());</p>
+<p>System.out.println("Received: " + requestBody);</p>
+<p>String response = "{\"message\": \"User created\"}";<br/>        exchange.getResponseHeaders().add("Content-Type", "application/json");<br/>        exchange.sendResponseHeaders(201, response.length());<br/>        OutputStream os = exchange.getResponseBody();<br/>        os.write(response.getBytes());<br/>        os.close();<br/>    }<br/>}</p>
+<p>class PostsHandler implements HttpHandler {<br/>    @Override<br/>    public void handle(HttpExchange exchange) throws IOException {<br/>        String jsonResponse = """[<br/>            {"id": 1, "title": "First Post", "body": "Content here"},<br/>            {"id": 2, "title": "Second Post", "body": "More content"}<br/>        ]""";</p>
+<p>exchange.getResponseHeaders().add("Content-Type", "application/json");<br/>        exchange.sendResponseHeaders(200, jsonResponse.length());<br/>        OutputStream os = exchange.getResponseBody();<br/>        os.write(jsonResponse.getBytes());<br/>        os.close();<br/>    }<br/>}<br/>```</p>
+<h3>3. Handling Headers and Query Parameters</h3>
+<p>```java<br/>class AdvancedHandler implements HttpHandler {<br/>    @Override<br/>    public void handle(HttpExchange exchange) throws IOException {<br/>        // Get headers<br/>        String userAgent = exchange.getRequestHeaders()<br/>            .getFirst("User-Agent");</p>
+<p>// Get query parameters<br/>        String query = exchange.getRequestURI().getQuery();<br/>        Map<String, String> params = parseQuery(query);</p>
+<p>String response = "User-Agent: " + userAgent + "\n";<br/>        response += "Params: " + params;</p>
+<p>exchange.sendResponseHeaders(200, response.length());<br/>        OutputStream os = exchange.getResponseBody();<br/>        os.write(response.getBytes());<br/>        os.close();<br/>    }</p>
+<p>private Map<String, String> parseQuery(String query) {<br/>        Map<String, String> params = new HashMap<>();<br/>        if (query != null) {<br/>            String[] pairs = query.split("&");<br/>            for (String pair : pairs) {<br/>                String[] keyValue = pair.split("=");<br/>                if (keyValue.length == 2) {<br/>                    params.put(keyValue[0], keyValue[1]);<br/>                }<br/>            }<br/>        }<br/>        return params;<br/>    }<br/>}<br/>```</p>
+<h3>4. Using Gson for JSON</h3>
+<p>To work with JSON more easily, use the Gson library:</p>
+<p>```java<br/>import com.google.gson.Gson;</p>
+<p>class User {<br/>    private int id;<br/>    private String name;<br/>    private String email;</p>
+<p>// Constructor, getters, setters<br/>}</p>
+<p>class JsonHandler implements HttpHandler {<br/>    private Gson gson = new Gson();</p>
+<p>@Override<br/>    public void handle(HttpExchange exchange) throws IOException {<br/>        if ("POST".equals(exchange.getRequestMethod())) {<br/>            // Parse JSON from request<br/>            String requestBody = new String(<br/>                exchange.getRequestBody().readAllBytes());<br/>            User user = gson.fromJson(requestBody, User.class);</p>
+<p>// Process user...</p>
+<p>// Return JSON response<br/>            String jsonResponse = gson.toJson(user);<br/>            exchange.getResponseHeaders()<br/>                .add("Content-Type", "application/json");<br/>            exchange.sendResponseHeaders(200, jsonResponse.length());<br/>            OutputStream os = exchange.getResponseBody();<br/>            os.write(jsonResponse.getBytes());<br/>            os.close();<br/>        }<br/>    }<br/>}<br/>```</p>
+<p>Java 11+'s <code>HttpClient</code> provides a modern and powerful API for making HTTP requests, supporting both synchronous and asynchronous operations. <code>HttpServer</code> is a great tool for learning and testing purposes, however in production you should use frameworks like Spring Boot or Javalin.</p>
+<p>In the next article, we'll move to JavaScript and explore the Fetch API as well as WebSocket in the browser.</p>
+<p>---</p>
+<h3>References</h3>
+<p>- [Java HttpClient Documentation](https://docs.oracle.com/en/java/javase/11/docs/api/java.net.http/java/net/http/HttpClient.html)<br/>- [Java HttpServer Documentation](https://docs.oracle.com/javase/8/docs/jre/api/net/httpserver/spec/com/sun/net/httpserver/HttpServer.html)<br/>- [Guide to Java HttpClient](https://www.baeldung.com/java-9-http-client)<br/>- [Building HTTP Server in Java](https://www.baeldung.com/java-http-server)</p>
+    </article>
+    <section class="social-section">
+      <div class="social-container">
+        <h2 data-i18n="social-title">X&#227; h&#7897;i</h2>
+        <div class="social-grid">
+          <a href="https://github.com/ThanhTra1409" target="_blank" class="social-card">
+            <i class="fab fa-github social-icon"></i>
+            <h3>GitHub</h3>
+            <p>@nttra204</p>
+          </a>
+          <a href="https://www.facebook.com/nguyen.thanh.tra.970568?locale=vi_VN" target="_blank" class="social-card">
+            <i class="fab fa-facebook social-icon"></i>
+            <h3>Facebook</h3>
+            <p>Nguy&#7877;n Thanh Tr&#224;</p>
+          </a>
+          <a href="https://www.instagram.com/nttra204_/?igsh=MXVlc3p1NG4zdnBidw%3D%3D&utm_source=qr" target="_blank" class="social-card">
+            <i class="fab fa-instagram social-icon"></i>
+            <h3>Instagram</h3>
+            <p>@nttra204_</p>
+          </a>
+          <a href="https://www.linkedin.com/in/thanh-tra-nguyen-84a46833a" target="_blank" class="social-card">
+            <i class="fab fa-linkedin social-icon"></i>
+            <h3>LinkedIn</h3>
+            <p>Nguy&#7877;n Thanh Tr&#224;</p>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer>
+    <div class="footer-content">
+      <div class="footer-brand">
+        <h3 data-i18n="site-title">Nguyễn Thanh Trà</h3>
+        <p class="footer-tagline" data-i18n="footer-tagline">Building scalable solutions with passion</p>
+      </div>
+      <div class="footer-contact">
+        <h4 data-i18n="contact-info">Th&#244;ng tin li&#234;n h&#7879;</h4>
+        <div class="contact-info-grid">
+          <div class="contact-info-item">
+            <i class="fas fa-envelope"></i>
+            <a href="mailto:ntra140924@gmail.com">ntra140924@gmail.com</a>
+          </div>
+          <div class="contact-info-item">
+            <i class="fas fa-phone"></i>
+            <a href="tel:0941779093">0941779093</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p><span data-i18n="footer-copyright">© 2025</span> <span data-i18n="site-title">Nguyễn Thanh Trà</span></p>
+      </div>
+    </div>
+  </footer>
+  <script src="/js/i18n.js"></script>
+  <script>
+  function toggleMenu(){
+    document.body.classList.toggle('menu-open');
+  }
+  </script>
+</body>
+</html>

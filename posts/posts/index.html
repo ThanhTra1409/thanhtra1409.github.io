@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Blog - Nguyễn Thanh Trà</title>
+  <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👨‍💻</text></svg>">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+  <div class="overlay" id="overlay">
+    <ul class="menu">
+      <li><a href="/" data-i18n="home">Home</a></li>
+      <li><a href="/posts/" data-i18n="blog">Blog</a></li>
+      <li><a href="/about/" data-i18n="about">About</a></li>
+    </ul>
+  </div>
+  <header>
+    <nav>
+      <div class="brand"><a href="/" data-i18n="site-title">Nguyễn Thanh Trà</a></div>
+      <ul>
+        <li><a href="/" data-i18n="home">Home</a></li>
+        <li><a href="/posts/" data-i18n="blog">Blog</a></li>
+        <li><a href="/about/" data-i18n="about">About</a></li>
+        <li class="lang-toggle-wrapper">
+          <div id="lang-switch" class="lang-switch" data-lang="vi">
+            <div class="lang-switch-slider"></div>
+            <button id="lang-vn" class="lang-btn">VN</button>
+            <button id="lang-en" class="lang-btn">EN</button>
+          </div>
+        </li>
+      </ul>
+      <div class="menu-toggle" onclick="toggleMenu()" aria-label="menu">☰</div>
+    </nav>
+  </header>
+  <main>
+    <h1 data-i18n="blog-title">Blog</h1>
+    <p class="blog-intro" data-i18n="blog-intro">Chia sẻ kiến thức và kinh nghiệm trong lập trình mạng với Java và JavaScript</p>
+    <ul class="posts">
+      <li>
+        <div class="thumb-wrap"><img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&auto=format&fit=crop" alt="Socket cơ bản trong Java" loading="lazy"></div>
+        <div class="post-card-content">
+          <a href="/posts/01-socket-java.html" data-i18n="post-01">Socket cơ bản trong Java</a>
+          <p class="excerpt">Lập trình mạng là một phần quan trọng trong phát triển ứng dụng hiện đại. Socket là nền tảng cơ bản nhất để thiết lập kết nối mạng giữa các máy tính....</p>
+          <div class="post-meta">
+            <span class="post-date">2025-12-01</span>
+          </div>
+        </div>
+        </li><li>
+        <div class="thumb-wrap"><img src="https://images.unsplash.com/photo-1516116216624-53e697fedbea?w=800&auto=format&fit=crop" alt="Multithreading và ServerSocket trong Java" loading="lazy"></div>
+        <div class="post-card-content">
+          <a href="/posts/02-multithread-server.html" data-i18n="post-02">Multithreading và ServerSocket trong Java</a>
+          <p class="excerpt">Trong bài trước, chúng ta đã tìm hiểu về Socket cơ bản trong Java. Tuy nhiên, một server đơn giản chỉ xử lý một client tại một thời điểm là chưa đủ ch...</p>
+          <div class="post-meta">
+            <span class="post-date">2025-12-02</span>
+          </div>
+        </div>
+        </li><li>
+        <div class="thumb-wrap"><img src="https://images.unsplash.com/photo-1555949963-aa79dcee981c?w=800&auto=format&fit=crop" alt="Java NIO — lập trình mạng hiệu năng cao" loading="lazy"></div>
+        <div class="post-card-content">
+          <a href="/posts/03-java-nio.html" data-i18n="post-03">Java NIO — lập trình mạng hiệu năng cao</a>
+          <p class="excerpt">Trong các bài trước, chúng ta đã tìm hiểu về Socket cơ bản và multithreading server. Tuy nhiên, với mô hình thread-per-connection, khi số lượng kết nố...</p>
+          <div class="post-meta">
+            <span class="post-date">2025-12-03</span>
+          </div>
+        </div>
+        </li><li>
+        <div class="thumb-wrap"><img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&auto=format&fit=crop" alt="Xây dựng HTTP client và server cơ bản bằng Java" loading="lazy"></div>
+        <div class="post-card-content">
+          <a href="/posts/04-java-http.html" data-i18n="post-04">Xây dựng HTTP client và server cơ bản bằng Java</a>
+          <p class="excerpt">HTTP là giao thức nền tảng của web, được sử dụng để truyền tải dữ liệu giữa client và server. Trong Java, chúng ta có thể dễ dàng tạo HTTP client để g...</p>
+          <div class="post-meta">
+            <span class="post-date">2025-12-05</span>
+          </div>
+        </div>
+        </li><li>
+        <div class="thumb-wrap"><img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&auto=format&fit=crop" alt="Fetch API và WebSocket trên trình duyệt" loading="lazy"></div>
+        <div class="post-card-content">
+          <a href="/posts/05-fetch-websocket.html" data-i18n="post-05">Fetch API và WebSocket trên trình duyệt</a>
+          <p class="excerpt">Trong phát triển web hiện đại, việc giao tiếp giữa client và server là thiết yếu. JavaScript cung cấp hai công cụ chính: Fetch API cho các yêu cầu HTT...</p>
+          <div class="post-meta">
+            <span class="post-date">2025-12-07</span>
+          </div>
+        </div>
+        </li><li>
+        <div class="thumb-wrap"><img src="https://images.unsplash.com/photo-1618401471353-b98afee0b2eb?w=800&auto=format&fit=crop" alt="Node.js: TCP server với module `net`" loading="lazy"></div>
+        <div class="post-card-content">
+          <a href="/posts/06-nodejs-tcp-server.html" data-i18n="post-06">Node.js: TCP server với module `net`</a>
+          <p class="excerpt">Node.js với kiến trúc event-driven và non-blocking I/O là nền tảng tuyệt vời để xây dựng server mạng hiệu năng cao. Module `net` được tích hợp sẵn tro...</p>
+          <div class="post-meta">
+            <span class="post-date">2025-12-09</span>
+          </div>
+        </div>
+        </li><li>
+        <div class="thumb-wrap"><img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&auto=format&fit=crop" alt="WebSocket server với Socket.IO" loading="lazy"></div>
+        <div class="post-card-content">
+          <a href="/posts/07-socketio.html" data-i18n="post-07">WebSocket server với Socket.IO</a>
+          <p class="excerpt">WebSocket là công nghệ tuyệt vời cho giao tiếp realtime, nhưng việc implement từ đầu có thể phức tạp. Socket.IO là thư viện giúp đơn giản hóa quá trìn...</p>
+          <div class="post-meta">
+            <span class="post-date">2025-12-11</span>
+          </div>
+        </div>
+        </li><li>
+        <div class="thumb-wrap"><img src="https://images.unsplash.com/photo-1484417894907-623942c8ee29?w=800&auto=format&fit=crop" alt="Xử lý REST API với Express (Node.js)" loading="lazy"></div>
+        <div class="post-card-content">
+          <a href="/posts/08-express-rest.html" data-i18n="post-08">Xử lý REST API với Express (Node.js)</a>
+          <p class="excerpt">Express.js là framework web phổ biến nhất cho Node.js, cung cấp các công cụ đơn giản nhưng mạnh mẽ để xây dựng web server và REST API. Với cú pháp ngắ...</p>
+          <div class="post-meta">
+            <span class="post-date">2025-12-14</span>
+          </div>
+        </div>
+        </li><li>
+        <div class="thumb-wrap"><img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=800&auto=format&fit=crop" alt="Bảo mật cơ bản: CORS và chính sách cho API" loading="lazy"></div>
+        <div class="post-card-content">
+          <a href="/posts/09-security-cors.html" data-i18n="post-09">Bảo mật cơ bản: CORS và chính sách cho API</a>
+          <p class="excerpt">Khi xây dựng web API, bảo mật là mối quan tâm hàng đầu. Tuy nhiên, nhiều developer mới bắt đầu thường gặp phải lỗi CORS hoặc bỏ qua các vấn đề bảo mật...</p>
+          <div class="post-meta">
+            <span class="post-date">2025-12-16</span>
+          </div>
+        </div>
+        </li>
+    </ul>
+    <section class="social-section">
+      <div class="social-container">
+        <h2 data-i18n="social-title">X&#227; h&#7897;i</h2>
+        <div class="social-grid">
+          <a href="https://github.com/ThanhTra1409" target="_blank" class="social-card">
+            <i class="fab fa-github social-icon"></i>
+            <h3>GitHub</h3>
+            <p>@nttra204</p>
+          </a>
+          <a href="https://www.facebook.com/nguyen.thanh.tra.970568?locale=vi_VN" target="_blank" class="social-card">
+            <i class="fab fa-facebook social-icon"></i>
+            <h3>Facebook</h3>
+            <p>Nguy&#7877;n Thanh Tr&#224;</p>
+          </a>
+          <a href="https://www.instagram.com/nttra204_/?igsh=MXVlc3p1NG4zdnBidw%3D%3D&utm_source=qr" target="_blank" class="social-card">
+            <i class="fab fa-instagram social-icon"></i>
+            <h3>Instagram</h3>
+            <p>@nttra204_</p>
+          </a>
+          <a href="https://www.linkedin.com/in/thanh-tra-nguyen-84a46833a" target="_blank" class="social-card">
+            <i class="fab fa-linkedin social-icon"></i>
+            <h3>LinkedIn</h3>
+            <p>Nguy&#7877;n Thanh Tr&#224;</p>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer>
+    <div class="footer-content">
+      <div class="footer-brand">
+        <h3 data-i18n="site-title">Nguyễn Thanh Trà</h3>
+        <p class="footer-tagline" data-i18n="footer-tagline">Building scalable solutions with passion</p>
+      </div>
+      <div class="footer-contact">
+        <h4 data-i18n="contact-info">Th&#244;ng tin li&#234;n h&#7879;</h4>
+        <div class="contact-info-grid">
+          <div class="contact-info-item">
+            <i class="fas fa-envelope"></i>
+            <a href="mailto:ntra140924@gmail.com">ntra140924@gmail.com</a>
+          </div>
+          <div class="contact-info-item">
+            <i class="fas fa-phone"></i>
+            <a href="tel:0941779093">0941779093</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p><span data-i18n="footer-copyright">© 2025</span> <span data-i18n="site-title">Nguyễn Thanh Trà</span></p>
+      </div>
+    </div>
+  </footer>
+  <script src="/js/i18n.js"></script>
+    <script>
+      function toggleMenu(){
+        document.body.classList.toggle('menu-open');
+      }
+      </script>
+</body>
+</html>

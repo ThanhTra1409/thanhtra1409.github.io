@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Basic Socket in Java - Nguyễn Thanh Trà</title>
+  <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👨‍💻</text></svg>">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body data-lang="en">
+  <div class="overlay" id="overlay">
+    <ul class="menu">
+      <li><a href="/" data-i18n="home">Home</a></li>
+      <li><a href="/posts/" data-i18n="blog">Blog</a></li>
+      <li><a href="/about/" data-i18n="about">About</a></li>
+    </ul>
+  </div>
+  <header>
+    <nav>
+      <div class="brand"><a href="/" data-i18n="site-title">Nguyễn Thanh Trà</a></div>
+      <ul>
+        <li><a href="/" data-i18n="home">Home</a></li>
+        <li><a href="/posts/" data-i18n="blog">Blog</a></li>
+        <li><a href="/about/" data-i18n="about">About</a></li>
+        <li class="lang-toggle-wrapper">
+          <div id="lang-switch" class="lang-switch" data-lang="en">
+            <div class="lang-switch-slider"></div>
+            <button id="lang-vn" class="lang-btn">VN</button>
+            <button id="lang-en" class="lang-btn">EN</button>
+          </div>
+        </li>
+      </ul>
+      <div class="menu-toggle" onclick="toggleMenu()" aria-label="menu">☰</div>
+    </nav>
+  </header>
+  <main>
+    <article class="post">
+      <h1>Basic Socket in Java</h1>
+      <p class="meta">2025-12-01</p>
+      <div class="featured-image"><img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&auto=format&fit=crop" alt="Socket cơ bản trong Java"></div>
+      <p>Network programming is an essential part of modern application development. Socket is the most fundamental foundation for establishing network connections between computers. In Java, the <code>java.net</code> package provides <code>Socket</code> and <code>ServerSocket</code> classes that help us easily build client-server applications.</p>
+<p>This article will introduce how to use Socket in Java to create TCP/IP connections, transmit and receive data between client and server, along with important notes when working with Sockets.</p>
+<img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&auto=format&fit=crop" alt="Socket Architecture" style="max-width: 100%; height: auto; border-radius: 8px; margin: 20px 0;">
+<h3>1. What is a Socket?</h3>
+<p>A Socket is an endpoint of a two-way communication channel between two programs running on a network. In Java, there are two main types of sockets:</p>
+<p>- <strong>Socket</strong>: Used on the client side to connect to a server<br/>- <strong>ServerSocket</strong>: Used on the server side to listen for connections from clients</p>
+<img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=1000&auto=format&fit=crop" alt="TCP Connection Flow" style="max-width: 100%; height: auto; border-radius: 8px; margin: 20px 0;">
+<h3>2. Creating a Server Socket</h3>
+<p>The server needs to create a <code>ServerSocket</code> to listen for incoming connections on a specific port:</p>
+<p>```java<br/>import java.io.<em>;<br/>import java.net.</em>;</p>
+<p>public class SimpleServer {<br/>    public static void main(String[] args) {<br/>        try (ServerSocket serverSocket = new ServerSocket(8080)) {<br/>            System.out.println("Server is listening on port 8080...");</p>
+<p>// Accept connection from client<br/>            Socket clientSocket = serverSocket.accept();<br/>            System.out.println("Client connected: " + clientSocket.getInetAddress());</p>
+<p>// Create input/output streams<br/>            BufferedReader in = new BufferedReader(<br/>                new InputStreamReader(clientSocket.getInputStream()));<br/>            PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);</p>
+<p>// Read data from client<br/>            String message = in.readLine();<br/>            System.out.println("Received from client: " + message);</p>
+<p>// Send response to client<br/>            out.println("Server received: " + message);</p>
+<p>// Close connection<br/>            clientSocket.close();</p>
+<p>} catch (IOException e) {<br/>            e.printStackTrace();<br/>        }<br/>    }<br/>}<br/>```</p>
+<h3>3. Creating a Client Socket</h3>
+<p>The client uses <code>Socket</code> to connect to the server:</p>
+<p>```java<br/>import java.io.<em>;<br/>import java.net.</em>;</p>
+<p>public class SimpleClient {<br/>    public static void main(String[] args) {<br/>        try (Socket socket = new Socket("localhost", 8080)) {<br/>            System.out.println("Connected to server!");</p>
+<p>// Create input/output streams<br/>            PrintWriter out = new PrintWriter(socket.getOutputStream(), true);<br/>            BufferedReader in = new BufferedReader(<br/>                new InputStreamReader(socket.getInputStream()));</p>
+<p>// Send data to server<br/>            out.println("Hello server!");</p>
+<p>// Receive response from server<br/>            String response = in.readLine();<br/>            System.out.println("Received from server: " + response);</p>
+<p>} catch (IOException e) {<br/>            e.printStackTrace();<br/>        }<br/>    }<br/>}<br/>```</p>
+<h3>4. Key Concepts</h3>
+<p><strong>TCP vs UDP:</strong><br/>- <strong>TCP (Transmission Control Protocol)</strong>: Connection-oriented, ensures data delivery and order (used by Socket)<br/>- <strong>UDP (User Datagram Protocol)</strong>: Connectionless, faster but doesn't guarantee delivery (used by DatagramSocket)</p>
+<p><strong>Ports:</strong><br/>- Port is a number (0-65535) identifying a specific service on a computer<br/>- Well-known ports: HTTP (80), HTTPS (443), FTP (21)<br/>- Custom applications typically use ports 1024-65535</p>
+<h3>5. Error Handling</h3>
+<p>Common errors when working with Sockets:</p>
+<p>``<code>java<br/>try {<br/>    Socket socket = new Socket("localhost", 8080);<br/>    // ... work with socket<br/>} catch (UnknownHostException e) {<br/>    System.err.println("Cannot find host: " + e.getMessage());<br/>} catch (IOException e) {<br/>    System.err.println("I/O error: " + e.getMessage());<br/>} finally {<br/>    // Always close socket in finally block<br/>    if (socket != null && !socket.isClosed()) {<br/>        socket.close();<br/>    }<br/>}<br/></code>``</p>
+<p><strong>Important notes:</strong><br/>- Always close Socket and streams after use to avoid resource leaks<br/>- Use try-with-resources (Java 7+) for automatic resource management<br/>- Handle exceptions properly, especially IOException and UnknownHostException<br/>- Set appropriate timeout to avoid blocking indefinitely</p>
+<h3>6. Practical Applications</h3>
+<p>Sockets are used in many applications:<br/>- <strong>Chat applications</strong>: Real-time messaging between users<br/>- <strong>File transfer</strong>: Sending files between computers<br/>- <strong>Remote control</strong>: Controlling a computer from another location<br/>- <strong>Online gaming</strong>: Synchronizing game state between players<br/>- <strong>IoT devices</strong>: Communication between smart devices</p>
+<h3>Conclusion</h3>
+<p>Java Socket is a powerful tool for building network applications. Understanding the basics of Socket helps you create client-server applications, from simple chat programs to complex distributed systems.</p>
+<p>In the next article, we'll explore multithreading with ServerSocket to handle multiple clients simultaneously, making our server more scalable and efficient.</p>
+<h3>References</h3>
+<p>- [Java Socket Documentation](https://docs.oracle.com/javase/8/docs/api/java/net/Socket.html)<br/>- [Java ServerSocket Documentation](https://docs.oracle.com/javase/8/docs/api/java/net/ServerSocket.html)<br/>- [Oracle Java Networking Tutorial](https://docs.oracle.com/javase/tutorial/networking/)</p>
+    </article>
+    <section class="social-section">
+      <div class="social-container">
+        <h2 data-i18n="social-title">X&#227; h&#7897;i</h2>
+        <div class="social-grid">
+          <a href="https://github.com/ThanhTra1409" target="_blank" class="social-card">
+            <i class="fab fa-github social-icon"></i>
+            <h3>GitHub</h3>
+            <p>@nttra204</p>
+          </a>
+          <a href="https://www.facebook.com/nguyen.thanh.tra.970568?locale=vi_VN" target="_blank" class="social-card">
+            <i class="fab fa-facebook social-icon"></i>
+            <h3>Facebook</h3>
+            <p>Nguy&#7877;n Thanh Tr&#224;</p>
+          </a>
+          <a href="https://www.instagram.com/nttra204_/?igsh=MXVlc3p1NG4zdnBidw%3D%3D&utm_source=qr" target="_blank" class="social-card">
+            <i class="fab fa-instagram social-icon"></i>
+            <h3>Instagram</h3>
+            <p>@nttra204_</p>
+          </a>
+          <a href="https://www.linkedin.com/in/thanh-tra-nguyen-84a46833a" target="_blank" class="social-card">
+            <i class="fab fa-linkedin social-icon"></i>
+            <h3>LinkedIn</h3>
+            <p>Nguy&#7877;n Thanh Tr&#224;</p>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer>
+    <div class="footer-content">
+      <div class="footer-brand">
+        <h3 data-i18n="site-title">Nguyễn Thanh Trà</h3>
+        <p class="footer-tagline" data-i18n="footer-tagline">Building scalable solutions with passion</p>
+      </div>
+      <div class="footer-contact">
+        <h4 data-i18n="contact-info">Th&#244;ng tin li&#234;n h&#7879;</h4>
+        <div class="contact-info-grid">
+          <div class="contact-info-item">
+            <i class="fas fa-envelope"></i>
+            <a href="mailto:ntra140924@gmail.com">ntra140924@gmail.com</a>
+          </div>
+          <div class="contact-info-item">
+            <i class="fas fa-phone"></i>
+            <a href="tel:0941779093">0941779093</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p><span data-i18n="footer-copyright">© 2025</span> <span data-i18n="site-title">Nguyễn Thanh Trà</span></p>
+      </div>
+    </div>
+  </footer>
+  <script src="/js/i18n.js"></script>
+  <script>
+  function toggleMenu(){
+    document.body.classList.toggle('menu-open');
+  }
+  </script>
+</body>
+</html>

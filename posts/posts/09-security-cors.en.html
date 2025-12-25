@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Basic Security: CORS and API Policies - Nguyễn Thanh Trà</title>
+  <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👨‍💻</text></svg>">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body data-lang="en">
+  <div class="overlay" id="overlay">
+    <ul class="menu">
+      <li><a href="/" data-i18n="home">Home</a></li>
+      <li><a href="/posts/" data-i18n="blog">Blog</a></li>
+      <li><a href="/about/" data-i18n="about">About</a></li>
+    </ul>
+  </div>
+  <header>
+    <nav>
+      <div class="brand"><a href="/" data-i18n="site-title">Nguyễn Thanh Trà</a></div>
+      <ul>
+        <li><a href="/" data-i18n="home">Home</a></li>
+        <li><a href="/posts/" data-i18n="blog">Blog</a></li>
+        <li><a href="/about/" data-i18n="about">About</a></li>
+        <li class="lang-toggle-wrapper">
+          <div id="lang-switch" class="lang-switch" data-lang="en">
+            <div class="lang-switch-slider"></div>
+            <button id="lang-vn" class="lang-btn">VN</button>
+            <button id="lang-en" class="lang-btn">EN</button>
+          </div>
+        </li>
+      </ul>
+      <div class="menu-toggle" onclick="toggleMenu()" aria-label="menu">☰</div>
+    </nav>
+  </header>
+  <main>
+    <article class="post">
+      <h1>Basic Security: CORS and API Policies</h1>
+      <p class="meta">2025-12-16</p>
+      <div class="featured-image"><img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=800&auto=format&fit=crop" alt="Bảo mật cơ bản: CORS và chính sách cho API"></div>
+      <p>When building web APIs, security is a top concern. However, many developers starting out often encounter CORS errors or overlook basic security issues, leading to applications vulnerable to attacks.</p>
+<p>This article will explain what CORS is, why we need it, how to configure it properly, and other security best practices for web APIs.</p>
+<img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=1200&auto=format&fit=crop" alt="Security Concept" style="max-width: 100%; height: auto; border-radius: 8px; margin: 20px 0;">
+<h3>1. What is CORS?</h3>
+<p><strong>CORS (Cross-Origin Resource Sharing)</strong> is a browser security mechanism that prevents requests from a different origin (domain) from calling your API.</p>
+<p><strong>Origin</strong> includes:<br/>- Protocol (http/https)<br/>- Domain (example.com)<br/>- Port (3000, 8080)</p>
+<p>Examples:<br/>- <code>http://localhost:3000</code> and <code>http://localhost:8080</code> are different origins<br/>- <code>http://example.com</code> and <code>https://example.com</code> are different origins</p>
+<h3>2. Why Do We Need CORS?</h3>
+<p>Without CORS, a malicious website could:<br/>- Read sensitive data from your API<br/>- Send requests with user credentials<br/>- Perform unauthorized operations</p>
+<h3>3. Configuring CORS in Express</h3>
+<h4>Basic - Allow All</h4>
+<p>```javascript<br/>const express = require('express');<br/>const cors = require('cors');</p>
+<p>const app = express();</p>
+<p>// Allow all origins (SHOULD NOT use in production)<br/>app.use(cors());</p>
+<p>app.get('/api/data', (req, res) => {<br/>  res.json({ message: 'Data' });<br/>});<br/>```</p>
+<h4>Restrict to Specific Origins</h4>
+<p>```javascript<br/>const corsOptions = {<br/>  origin: 'http://localhost:3001', // Only allow this origin<br/>  credentials: true, // Allow sending cookies<br/>  optionsSuccessStatus: 200<br/>};</p>
+<p>app.use(cors(corsOptions));<br/>```</p>
+<h4>Multiple Origins</h4>
+<p>```javascript<br/>const allowedOrigins = [<br/>  'http://localhost:3000',<br/>  'http://localhost:3001',<br/>  'https://myapp.com'<br/>];</p>
+<p>const corsOptions = {<br/>  origin: function (origin, callback) {<br/>    // Allow requests with no origin (like mobile apps, Postman)<br/>    if (!origin) return callback(null, true);</p>
+<p>if (allowedOrigins.indexOf(origin) === -1) {<br/>      const msg = 'The CORS policy does not allow access from this origin.';<br/>      return callback(new Error(msg), false);<br/>    }<br/>    return callback(null, true);<br/>  },<br/>  credentials: true<br/>};</p>
+<p>app.use(cors(corsOptions));<br/>```</p>
+<h4>Allow Only Specific Methods</h4>
+<p>```javascript<br/>const corsOptions = {<br/>  origin: 'http://localhost:3001',<br/>  methods: ['GET', 'POST'], // Only allow GET and POST<br/>  allowedHeaders: ['Content-Type', 'Authorization']<br/>};</p>
+<p>app.use(cors(corsOptions));<br/>```</p>
+<h3>4. Configuring CORS in Java</h3>
+<p>```java<br/>import javax.servlet.<em>;<br/>import javax.servlet.http.</em>;</p>
+<p>public class CorsFilter implements Filter {<br/>    @Override<br/>    public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain)<br/>            throws IOException, ServletException {</p>
+<p>HttpServletResponse response = (HttpServletResponse) res;<br/>        HttpServletRequest request = (HttpServletRequest) req;</p>
+<p>response.setHeader("Access-Control-Allow-Origin", "http://localhost:3001");<br/>        response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");<br/>        response.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");<br/>        response.setHeader("Access-Control-Allow-Credentials", "true");</p>
+<p>if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {<br/>            response.setStatus(HttpServletResponse.SC_OK);<br/>        } else {<br/>            chain.doFilter(req, res);<br/>        }<br/>    }<br/>}<br/>```</p>
+<h3>5. Authentication with JWT</h3>
+<p>```javascript<br/>const jwt = require('jsonwebtoken');<br/>const SECRET_KEY = 'your-secret-key';</p>
+<p>// Create token<br/>app.post('/api/login', (req, res) => {<br/>  const { username, password } = req.body;</p>
+<p>// Verify credentials (assumed)<br/>  if (username === 'user' && password === 'pass') {<br/>    const token = jwt.sign(<br/>      { userId: 1, username: username },<br/>      SECRET_KEY,<br/>      { expiresIn: '1h' }<br/>    );</p>
+<p>res.json({ token: token });<br/>  } else {<br/>    res.status(401).json({ error: 'Invalid credentials' });<br/>  }<br/>});</p>
+<p>// Authentication middleware<br/>function authenticateToken(req, res, next) {<br/>  const authHeader = req.headers['authorization'];<br/>  const token = authHeader && authHeader.split(' ')[1]; // Bearer TOKEN</p>
+<p>if (!token) {<br/>    return res.status(401).json({ error: 'No token provided' });<br/>  }</p>
+<p>jwt.verify(token, SECRET_KEY, (err, user) => {<br/>    if (err) {<br/>      return res.status(403).json({ error: 'Invalid token' });<br/>    }</p>
+<p>req.user = user;<br/>    next();<br/>  });<br/>}</p>
+<p>// Use middleware<br/>app.get('/api/protected', authenticateToken, (req, res) => {<br/>  res.json({ message: 'Protected data', user: req.user });<br/>});<br/>```</p>
+<h3>6. Rate Limiting</h3>
+<p>```javascript<br/>const rateLimit = require('express-rate-limit');</p>
+<p>// General request limit<br/>const limiter = rateLimit({<br/>  windowMs: 15 <em> 60 </em> 1000, // 15 minutes<br/>  max: 100, // 100 requests per IP<br/>  message: 'Too many requests, please try again later.',<br/>  standardHeaders: true,<br/>  legacyHeaders: false,<br/>});</p>
+<p>app.use('/api/', limiter);</p>
+<p>// Login attempt limit<br/>const loginLimiter = rateLimit({<br/>  windowMs: 15 <em> 60 </em> 1000,<br/>  max: 5, // 5 attempts<br/>  skipSuccessfulRequests: true,<br/>  message: 'Too many login attempts'<br/>});</p>
+<p>app.post('/api/login', loginLimiter, (req, res) => {<br/>  // Login logic...<br/>});<br/>```</p>
+<h3>7. Helmet - Security Headers</h3>
+<p>```javascript<br/>const helmet = require('helmet');</p>
+<p>// Use all protections<br/>app.use(helmet());</p>
+<p>// Or customize<br/>app.use(<br/>  helmet({<br/>    contentSecurityPolicy: {<br/>      directives: {<br/>        defaultSrc: ["'self'"],<br/>        styleSrc: ["'self'", "'unsafe-inline'"],<br/>        scriptSrc: ["'self'"],<br/>        imgSrc: ["'self'", "data:", "https:"],<br/>      },<br/>    },<br/>    hsts: {<br/>      maxAge: 31536000,<br/>      includeSubDomains: true,<br/>      preload: true<br/>    }<br/>  })<br/>);<br/>```</p>
+<h3>8. Input Validation</h3>
+<p>```javascript<br/>const { body, validationResult } = require('express-validator');</p>
+<p>app.post('/api/users',<br/>  // Validation rules<br/>  body('email').isEmail().normalizeEmail(),<br/>  body('password').isLength({ min: 8 }),<br/>  body('name').trim().isLength({ min: 3 }),</p>
+<p>// Handler<br/>  (req, res) => {<br/>    const errors = validationResult(req);</p>
+<p>if (!errors.isEmpty()) {<br/>      return res.status(400).json({ errors: errors.array() });<br/>    }</p>
+<p>// Create user...<br/>    res.json({ message: 'User created' });<br/>  }<br/>);<br/>```</p>
+<h3>9. SQL Injection Prevention</h3>
+<p>```javascript<br/>// Use parameterized queries<br/>const mysql = require('mysql2/promise');</p>
+<p>// NEVER do this:<br/>// const query = <code>SELECT * FROM users WHERE email = '${email}'</code>;</p>
+<p>// CORRECT:<br/>const [rows] = await connection.execute(<br/>  'SELECT * FROM users WHERE email = ?',<br/>  [email]<br/>);</p>
+<p>// With ORM (Sequelize)<br/>const user = await User.findOne({<br/>  where: { email: email }<br/>});<br/>```</p>
+<h3>10. HTTPS and Best Practices</h3>
+<p>```javascript<br/>const https = require('https');<br/>const fs = require('fs');</p>
+<p>const options = {<br/>  key: fs.readFileSync('private-key.pem'),<br/>  cert: fs.readFileSync('certificate.pem')<br/>};</p>
+<p>https.createServer(options, app).listen(443);</p>
+<p>// Redirect HTTP to HTTPS<br/>const http = require('http');<br/>http.createServer((req, res) => {<br/>  res.writeHead(301, { Location: <code>https://${req.headers.host}${req.url}</code> });<br/>  res.end();<br/>}).listen(80);<br/>```</p>
+<h3>11. Security Checklist</h3>
+<p>☑️ Use HTTPS in production  <br/>☑️ Configure CORS properly  <br/>☑️ Implement authentication & authorization  <br/>☑️ Use Helmet for security headers  <br/>☑️ Rate limiting for APIs  <br/>☑️ Validate and sanitize inputs  <br/>☑️ Use parameterized queries  <br/>☑️ Don't expose sensitive data in errors  <br/>☑️ Keep dependencies updated  <br/>☑️ Use environment variables for secrets  <br/>☑️ Log security events</p>
+<p>API security is an ongoing process, not a one-time task. CORS is just a small part of a comprehensive security system. Combine CORS with authentication, rate limiting, input validation, and other best practices to build secure APIs.</p>
+<p>Always update your security knowledge, follow new vulnerabilities, and regularly check security. Security is a top priority, not a secondary choice!</p>
+<p>---</p>
+<h3>References</h3>
+<p>- [MDN CORS Documentation](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS)<br/>- [OWASP Top 10 Web Application Security Risks](https://owasp.org/www-project-top-ten/)<br/>- [Express Security Best Practices](https://expressjs.com/en/advanced/best-practice-security.html)<br/>- [JWT.io - JSON Web Tokens](https://jwt.io/)</p>
+    </article>
+    <section class="social-section">
+      <div class="social-container">
+        <h2 data-i18n="social-title">X&#227; h&#7897;i</h2>
+        <div class="social-grid">
+          <a href="https://github.com/ThanhTra1409" target="_blank" class="social-card">
+            <i class="fab fa-github social-icon"></i>
+            <h3>GitHub</h3>
+            <p>@nttra204</p>
+          </a>
+          <a href="https://www.facebook.com/nguyen.thanh.tra.970568?locale=vi_VN" target="_blank" class="social-card">
+            <i class="fab fa-facebook social-icon"></i>
+            <h3>Facebook</h3>
+            <p>Nguy&#7877;n Thanh Tr&#224;</p>
+          </a>
+          <a href="https://www.instagram.com/nttra204_/?igsh=MXVlc3p1NG4zdnBidw%3D%3D&utm_source=qr" target="_blank" class="social-card">
+            <i class="fab fa-instagram social-icon"></i>
+            <h3>Instagram</h3>
+            <p>@nttra204_</p>
+          </a>
+          <a href="https://www.linkedin.com/in/thanh-tra-nguyen-84a46833a" target="_blank" class="social-card">
+            <i class="fab fa-linkedin social-icon"></i>
+            <h3>LinkedIn</h3>
+            <p>Nguy&#7877;n Thanh Tr&#224;</p>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer>
+    <div class="footer-content">
+      <div class="footer-brand">
+        <h3 data-i18n="site-title">Nguyễn Thanh Trà</h3>
+        <p class="footer-tagline" data-i18n="footer-tagline">Building scalable solutions with passion</p>
+      </div>
+      <div class="footer-contact">
+        <h4 data-i18n="contact-info">Th&#244;ng tin li&#234;n h&#7879;</h4>
+        <div class="contact-info-grid">
+          <div class="contact-info-item">
+            <i class="fas fa-envelope"></i>
+            <a href="mailto:ntra140924@gmail.com">ntra140924@gmail.com</a>
+          </div>
+          <div class="contact-info-item">
+            <i class="fas fa-phone"></i>
+            <a href="tel:0941779093">0941779093</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p><span data-i18n="footer-copyright">© 2025</span> <span data-i18n="site-title">Nguyễn Thanh Trà</span></p>
+      </div>
+    </div>
+  </footer>
+  <script src="/js/i18n.js"></script>
+  <script>
+  function toggleMenu(){
+    document.body.classList.toggle('menu-open');
+  }
+  </script>
+</body>
+</html>

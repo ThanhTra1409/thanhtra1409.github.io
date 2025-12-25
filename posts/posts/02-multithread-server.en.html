@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Multithreading and ServerSocket in Java - Nguyễn Thanh Trà</title>
+  <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👨‍💻</text></svg>">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body data-lang="en">
+  <div class="overlay" id="overlay">
+    <ul class="menu">
+      <li><a href="/" data-i18n="home">Home</a></li>
+      <li><a href="/posts/" data-i18n="blog">Blog</a></li>
+      <li><a href="/about/" data-i18n="about">About</a></li>
+    </ul>
+  </div>
+  <header>
+    <nav>
+      <div class="brand"><a href="/" data-i18n="site-title">Nguyễn Thanh Trà</a></div>
+      <ul>
+        <li><a href="/" data-i18n="home">Home</a></li>
+        <li><a href="/posts/" data-i18n="blog">Blog</a></li>
+        <li><a href="/about/" data-i18n="about">About</a></li>
+        <li class="lang-toggle-wrapper">
+          <div id="lang-switch" class="lang-switch" data-lang="en">
+            <div class="lang-switch-slider"></div>
+            <button id="lang-vn" class="lang-btn">VN</button>
+            <button id="lang-en" class="lang-btn">EN</button>
+          </div>
+        </li>
+      </ul>
+      <div class="menu-toggle" onclick="toggleMenu()" aria-label="menu">☰</div>
+    </nav>
+  </header>
+  <main>
+    <article class="post">
+      <h1>Multithreading and ServerSocket in Java</h1>
+      <p class="meta">2025-12-02</p>
+      <div class="featured-image"><img src="https://images.unsplash.com/photo-1516116216624-53e697fedbea?w=800&auto=format&fit=crop" alt="Multithreading và ServerSocket trong Java"></div>
+      <p>In the previous article, we learned about basic Sockets in Java. However, a simple server that only handles one client at a time is not sufficient for real-world applications. When multiple clients connect simultaneously, we need to use multithreading to handle connections in parallel.</p>
+<p>This article will guide you through building a multithreaded server in Java, using Thread Pool with <code>ExecutorService</code> to efficiently manage client connections.</p>
+<img src="https://images.unsplash.com/photo-1516116216624-53e697fedbea?w=1200&auto=format&fit=crop" alt="Multithreading Concept" style="max-width: 100%; height: auto; border-radius: 8px; margin: 20px 0;">
+<h3>1. The Problem with Single-Threaded Server</h3>
+<p>A single-threaded server can only handle one client at a time. While processing one client, the server cannot accept new connections, leading to:</p>
+<p>- Clients having to wait a long time<br/>- Poor performance with multiple connections<br/>- Inability to utilize system resources</p>
+<h3>2. Thread-Per-Connection Pattern</h3>
+<p>The simplest approach is to create a new thread for each connecting client:</p>
+<p>```java<br/>import java.io.<em>;<br/>import java.net.</em>;</p>
+<p>public class MultiThreadedServer {<br/>    public static void main(String[] args) {<br/>        try (ServerSocket serverSocket = new ServerSocket(8080)) {<br/>            System.out.println("Server running on port 8080...");</p>
+<p>while (true) {<br/>                // Accept new connection<br/>                Socket clientSocket = serverSocket.accept();<br/>                System.out.println("Client connected: " + clientSocket.getInetAddress());</p>
+<p>// Create new thread for each client<br/>                Thread clientThread = new Thread(new ClientHandler(clientSocket));<br/>                clientThread.start();<br/>            }<br/>        } catch (IOException e) {<br/>            e.printStackTrace();<br/>        }<br/>    }<br/>}</p>
+<p>class ClientHandler implements Runnable {<br/>    private Socket clientSocket;</p>
+<p>public ClientHandler(Socket socket) {<br/>        this.clientSocket = socket;<br/>    }</p>
+<p>@Override<br/>    public void run() {<br/>        try (BufferedReader in = new BufferedReader(<br/>                new InputStreamReader(clientSocket.getInputStream()));<br/>             PrintWriter out = new PrintWriter(<br/>                clientSocket.getOutputStream(), true)) {</p>
+<p>String message;<br/>            while ((message = in.readLine()) != null) {<br/>                System.out.println("Received: " + message);<br/>                out.println("Echo: " + message);</p>
+<p>if ("bye".equalsIgnoreCase(message)) {<br/>                    break;<br/>                }<br/>            }<br/>        } catch (IOException e) {<br/>            e.printStackTrace();<br/>        } finally {<br/>            try {<br/>                clientSocket.close();<br/>            } catch (IOException e) {<br/>                e.printStackTrace();<br/>            }<br/>        }<br/>    }<br/>}<br/>```</p>
+<h3>3. Using Thread Pool with ExecutorService</h3>
+<p>Creating a new thread for each connection can waste resources when there are too many clients. Thread Pool helps limit the number of threads and reuse them:</p>
+<img src="https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=1000&auto=format&fit=crop" alt="Thread Pool Architecture" style="max-width: 100%; height: auto; border-radius: 8px; margin: 20px 0;">
+<p>```java<br/>import java.io.<em>;<br/>import java.net.</em>;<br/>import java.util.concurrent.*;</p>
+<p>public class ThreadPoolServer {<br/>    private static final int PORT = 8080;<br/>    private static final int THREAD_POOL_SIZE = 10;</p>
+<p>public static void main(String[] args) {<br/>        // Create thread pool with 10 threads<br/>        ExecutorService executor = Executors.newFixedThreadPool(THREAD_POOL_SIZE);</p>
+<p>try (ServerSocket serverSocket = new ServerSocket(PORT)) {<br/>            System.out.println("Server with Thread Pool running...");</p>
+<p>while (true) {<br/>                Socket clientSocket = serverSocket.accept();<br/>                System.out.println("Client connected: " + clientSocket.getInetAddress());</p>
+<p>// Submit task to thread pool<br/>                executor.submit(new ClientHandler(clientSocket));<br/>            }<br/>        } catch (IOException e) {<br/>            e.printStackTrace();<br/>        } finally {<br/>            executor.shutdown();<br/>        }<br/>    }<br/>}<br/>```</p>
+<h3>4. Exception Handling and Resource Closing</h3>
+<p>It's important to handle exceptions properly and ensure resources are closed:</p>
+<p>```java<br/>class ClientHandler implements Runnable {<br/>    private Socket clientSocket;</p>
+<p>public ClientHandler(Socket socket) {<br/>        this.clientSocket = socket;<br/>    }</p>
+<p>@Override<br/>    public void run() {<br/>        try (Socket socket = clientSocket;<br/>             BufferedReader in = new BufferedReader(<br/>                new InputStreamReader(socket.getInputStream()));<br/>             PrintWriter out = new PrintWriter(<br/>                socket.getOutputStream(), true)) {</p>
+<p>String message;<br/>            while ((message = in.readLine()) != null) {<br/>                processMessage(message, out);</p>
+<p>if ("exit".equalsIgnoreCase(message)) {<br/>                    break;<br/>                }<br/>            }</p>
+<p>} catch (IOException e) {<br/>            System.err.println("Error handling client: " + e.getMessage());<br/>        }<br/>    }</p>
+<p>private void processMessage(String message, PrintWriter out) {<br/>        System.out.println("Processing: " + message);<br/>        out.println("Server received: " + message);<br/>    }<br/>}<br/>```</p>
+<h3>5. Graceful Shutdown</h3>
+<p>When shutting down the server, ensure all threads have completed:</p>
+<p>``<code>java<br/>Runtime.getRuntime().addShutdownHook(new Thread(() -> {<br/>    System.out.println("Shutting down server...");<br/>    executor.shutdown();<br/>    try {<br/>        if (!executor.awaitTermination(60, TimeUnit.SECONDS)) {<br/>            executor.shutdownNow();<br/>        }<br/>    } catch (InterruptedException e) {<br/>        executor.shutdownNow();<br/>    }<br/>}));<br/></code>``</p>
+<h3>6. Notes on Synchronization</h3>
+<p>When multiple threads access shared data, synchronization is needed:</p>
+<p>```java<br/>class ClientRegistry {<br/>    private final Set<Socket> clients = Collections.synchronizedSet(new HashSet<>());</p>
+<p>public void addClient(Socket socket) {<br/>        clients.add(socket);<br/>    }</p>
+<p>public void removeClient(Socket socket) {<br/>        clients.remove(socket);<br/>    }</p>
+<p>public void broadcast(String message) {<br/>        synchronized (clients) {<br/>            for (Socket client : clients) {<br/>                try {<br/>                    PrintWriter out = new PrintWriter(client.getOutputStream(), true);<br/>                    out.println(message);<br/>                } catch (IOException e) {<br/>                    e.printStackTrace();<br/>                }<br/>            }<br/>        }<br/>    }<br/>}<br/>```</p>
+<p>Multithreading is an important technique for building servers capable of handling multiple clients simultaneously. Using Thread Pool with <code>ExecutorService</code> helps manage resources more efficiently compared to creating a new thread for each connection.</p>
+<p>However, with extremely large numbers of connections (thousands), thread-based models may hit limits. In the next article, we'll explore Java NIO - a non-blocking approach that handles thousands of connections with minimal threads.</p>
+<p>---</p>
+<h3>References</h3>
+<p>- [Java Concurrency Tutorial](https://docs.oracle.com/javase/tutorial/essential/concurrency/)<br/>- [ExecutorService Documentation](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ExecutorService.html)<br/>- [Java Thread Pool Best Practices](https://www.baeldung.com/thread-pool-java-and-guava)<br/>- [Multithreaded Server Socket Programming](https://www.geeksforgeeks.org/multithreaded-servers-in-java/)</p>
+    </article>
+    <section class="social-section">
+      <div class="social-container">
+        <h2 data-i18n="social-title">X&#227; h&#7897;i</h2>
+        <div class="social-grid">
+          <a href="https://github.com/ThanhTra1409" target="_blank" class="social-card">
+            <i class="fab fa-github social-icon"></i>
+            <h3>GitHub</h3>
+            <p>@nttra204</p>
+          </a>
+          <a href="https://www.facebook.com/nguyen.thanh.tra.970568?locale=vi_VN" target="_blank" class="social-card">
+            <i class="fab fa-facebook social-icon"></i>
+            <h3>Facebook</h3>
+            <p>Nguy&#7877;n Thanh Tr&#224;</p>
+          </a>
+          <a href="https://www.instagram.com/nttra204_/?igsh=MXVlc3p1NG4zdnBidw%3D%3D&utm_source=qr" target="_blank" class="social-card">
+            <i class="fab fa-instagram social-icon"></i>
+            <h3>Instagram</h3>
+            <p>@nttra204_</p>
+          </a>
+          <a href="https://www.linkedin.com/in/thanh-tra-nguyen-84a46833a" target="_blank" class="social-card">
+            <i class="fab fa-linkedin social-icon"></i>
+            <h3>LinkedIn</h3>
+            <p>Nguy&#7877;n Thanh Tr&#224;</p>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer>
+    <div class="footer-content">
+      <div class="footer-brand">
+        <h3 data-i18n="site-title">Nguyễn Thanh Trà</h3>
+        <p class="footer-tagline" data-i18n="footer-tagline">Building scalable solutions with passion</p>
+      </div>
+      <div class="footer-contact">
+        <h4 data-i18n="contact-info">Th&#244;ng tin li&#234;n h&#7879;</h4>
+        <div class="contact-info-grid">
+          <div class="contact-info-item">
+            <i class="fas fa-envelope"></i>
+            <a href="mailto:ntra140924@gmail.com">ntra140924@gmail.com</a>
+          </div>
+          <div class="contact-info-item">
+            <i class="fas fa-phone"></i>
+            <a href="tel:0941779093">0941779093</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p><span data-i18n="footer-copyright">© 2025</span> <span data-i18n="site-title">Nguyễn Thanh Trà</span></p>
+      </div>
+    </div>
+  </footer>
+  <script src="/js/i18n.js"></script>
+  <script>
+  function toggleMenu(){
+    document.body.classList.toggle('menu-open');
+  }
+  </script>
+</body>
+</html>
