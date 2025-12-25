@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>{{ if .Title }}{{ .Title }} - {{ end }}{{ .Site.Title }}</title>
+  <link rel="stylesheet" href="{{ "css/style.css" | relURL }}">
+</head>
+<body>
+  <header>
+    <div class="site">
+      <nav>
+        <div class="brand"><a href="/" data-i18n="site-title">{{ .Site.Title }}</a></div>
+        <ul>
+          {{ range .Site.Menus.main }}
+          <li><a href="{{ .URL }}" data-i18n="{{ .Identifier }}">{{ .Name }}</a></li>
+          {{ end }}
+          <li><button id="lang-toggle" class="lang-btn" aria-label="Switch language">🇬🇧 EN</button></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+  <main class="site">
+    {{ block "main" . }}{{ end }}
+  </main>
+  <footer>
+    <div class="site">
+      <p><span data-i18n="site-title">{{ .Site.Title }}</span> • <span data-i18n="footer-copyright">© {{ now.Format "2006" }}</span></p>
+    </div>
+  <footer>
+    <div class="footer-content">
+      <div class="footer-brand">
+        <h3 data-i18n="site-title">Blog Lập Trình Mạng</h3>
+        <p class="footer-tagline" data-i18n="footer-tagline">Building scalable solutions with passion</p>
+      </div>
+      <div class="footer-contact">
+        <h4 data-i18n="contact-info">Liên hệ</h4>
+        <div class="contact-info-grid">
+          <div class="contact-info-item">
+            <i class="fas fa-envelope"></i>
+            <a href="mailto:ntra140924@gmail.com">ntra140924@gmail.com</a>
+          </div>
+          <div class="contact-info-item">
+            <i class="fas fa-phone"></i>
+            <a href="tel:0941779093">0941779093</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p><span data-i18n="footer-copyright">© 2025</span> <span data-i18n="site-title">Blog Lập Trình Mạng</span>. <span data-i18n="rights">All rights reserved.</span></p>
+      </div>
+    </div>
+  </footer>

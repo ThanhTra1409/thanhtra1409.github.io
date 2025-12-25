@@ -1,0 +1,26 @@
+baseURL = "https://yourusername.github.io/your-repo"
+languageCode = "vi"
+title = "Nguyễn Thanh Trà"
+theme = "minimal-bw"
+
+[params]
+  tagline = "Chia sẻ kiến thức lập trình mạng — Java & JavaScript"
+
+[menu]
+  [[menu.main]]
+    identifier = "home"
+    name = "Home"
+    url = "/"
+    weight = 10
+
+  [[menu.main]]
+    identifier = "blog"
+    name = "Blog"
+    url = "/posts/"
+    weight = 20
+
+  [[menu.main]]
+    identifier = "about"
+    name = "About"
+    url = "/about/"
+    weight = 30
