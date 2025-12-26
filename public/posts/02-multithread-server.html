@@ -1,45 +1,87 @@
 <!doctype html>
+
 <html lang="vi">
+
 <head>
+
   <meta charset="utf-8">
+
   <meta name="viewport" content="width=device-width,initial-scale=1">
+
   <title>Multithreading và ServerSocket trong Java - Nguyễn Thanh Trà</title>
+
   <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>ðŸ‘¨â€ðŸ’»</text></svg>">
+
   <link rel="stylesheet" href="/css/style.css">
+
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
 </head>
+
 <body>
+
   <div class="overlay" id="overlay">
+
     <ul class="menu">
+
       <li><a href="/" data-i18n="home">Home</a></li>
+
       <li><a href="/posts/" data-i18n="blog">Blog</a></li>
+
       <li><a href="/about/" data-i18n="about">About</a></li>
+
     </ul>
+
   </div>
+
   <header>
+
     <nav>
+
       <div class="brand"><a href="/" data-i18n="site-title">Nguyễn Thanh Trà</a></div>
+
       <ul>
+
         <li><a href="/" data-i18n="home">Home</a></li>
+
         <li><a href="/posts/" data-i18n="blog">Blog</a></li>
+
         <li><a href="/about/" data-i18n="about">About</a></li>
+
         <li class="lang-toggle-wrapper">
+
           <div id="lang-switch" class="lang-switch" data-lang="vi">
+
             <div class="lang-switch-slider"></div>
+
             <button id="lang-vn" class="lang-btn">VN</button>
+
             <button id="lang-en" class="lang-btn">EN</button>
+
           </div>
+
         </li>
+
       </ul>
+
       <div class="menu-toggle" onclick="toggleMenu()" aria-label="menu">â˜°</div>
+
     </nav>
+
   </header>
+
   <main>
+
     <article class="post">
+
       <h1>Multithreading và ServerSocket trong Java</h1>
+
       <p class="meta">2025-12-02</p>
+
       <div class="featured-image"><img src="https://images.unsplash.com/photo-1516116216624-53e697fedbea?w=800&auto=format&fit=crop" alt="Multithreading và ServerSocket trong Java"></div>
+
       <p>Trong bài trước, chúng ta đã tìm hiểu về Socket cơ bản trong Java. Tuy nhiên, một server đơn giản chỉ xử lý một client tại một thời điểm là chưa đủ cho ứng dụng thực tế. Khi có nhiều client kết nối đồng thời, chúng ta cần sử dụng multithreading để xử lý song song các kết nối.</p>
 <p>Bài viết này sẽ hướng dẫn cách xây dựng server đa luồng (multithreaded server) trong Java, sử dụng Thread Pool với <code>ExecutorService</code> để quản lý hiệu quả các kết nối client.</p>
 <img src="https://images.unsplash.com/photo-1516116216624-53e697fedbea?w=1200&auto=format&fit=crop" alt="Multithreading Concept" style="max-width: 100%; height: auto; border-radius: 8px; margin: 20px 0;">
@@ -89,64 +131,125 @@
 <p>---</p>
 <h3>Tài liệu tham khảo</h3>
 <p>- [Java Concurrency Tutorial](https://docs.oracle.com/javase/tutorial/essential/concurrency/)<br/>- [ExecutorService Documentation](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ExecutorService.html)<br/>- [Java Thread Pool Best Practices](https://www.baeldung.com/thread-pool-java-and-guava)<br/>- [Multithreaded Server Socket Programming](https://www.geeksforgeeks.org/multithreaded-servers-in-java/)</p>
+
     </article>
+
     <section class="social-section">
+
       <div class="social-container">
-        <h2 data-i18n="social-title">X&#227; h&#7897;i</h2>
+
+        <h2 data-i18n="social-title">Xã hội</h2>
+
         <div class="social-grid">
+
           <a href="https://github.com/ThanhTra1409" target="_blank" class="social-card">
+
             <i class="fab fa-github social-icon"></i>
+
             <h3>GitHub</h3>
+
             <p>@nttra204</p>
+
           </a>
+
           <a href="https://www.facebook.com/nguyen.thanh.tra.970568?locale=vi_VN" target="_blank" class="social-card">
+
             <i class="fab fa-facebook social-icon"></i>
+
             <h3>Facebook</h3>
+
             <p>Nguy&#7877;n Thanh Tr&#224;</p>
+
           </a>
+
           <a href="https://www.instagram.com/nttra204_/?igsh=MXVlc3p1NG4zdnBidw%3D%3D&utm_source=qr" target="_blank" class="social-card">
+
             <i class="fab fa-instagram social-icon"></i>
+
             <h3>Instagram</h3>
+
             <p>@nttra204_</p>
+
           </a>
+
           <a href="https://www.linkedin.com/in/thanh-tra-nguyen-84a46833a" target="_blank" class="social-card">
+
             <i class="fab fa-linkedin social-icon"></i>
+
             <h3>LinkedIn</h3>
+
             <p>Nguy&#7877;n Thanh Tr&#224;</p>
+
           </a>
+
         </div>
+
       </div>
+
     </section>
+
   </main>
+
   <footer>
+
     <div class="footer-content">
+
       <div class="footer-brand">
+
         <h3 data-i18n="site-title">Nguyễn Thanh Trà</h3>
+
         <p class="footer-tagline" data-i18n="footer-tagline">Building scalable solutions with passion</p>
+
       </div>
+
       <div class="footer-contact">
-        <h4 data-i18n="contact-info">Th&#244;ng tin li&#234;n h&#7879;</h4>
+
+        <h4 data-i18n="contact-info">Thông tin liên hệ</h4>
+
         <div class="contact-info-grid">
+
           <div class="contact-info-item">
+
             <i class="fas fa-envelope"></i>
+
             <a href="mailto:ntra140924@gmail.com">ntra140924@gmail.com</a>
+
           </div>
+
           <div class="contact-info-item">
+
             <i class="fas fa-phone"></i>
+
             <a href="tel:0941779093">0941779093</a>
+
           </div>
+
         </div>
+
       </div>
+
       <div class="footer-bottom">
+
         <p><span data-i18n="footer-copyright">Â© 2025</span> <span data-i18n="site-title">Nguyễn Thanh Trà</span></p>
+
       </div>
+
     </div>
+
   </footer>
+
   <script src="/js/i18n.js?v=1.1"></script>
+
   <script>
+
   function toggleMenu(){
+
     document.body.classList.toggle('menu-open');
+
   }
+
   </script>
+
 </body>
+
 </html>

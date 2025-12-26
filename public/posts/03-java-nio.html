@@ -1,45 +1,87 @@
 <!doctype html>
+
 <html lang="vi">
+
 <head>
+
   <meta charset="utf-8">
+
   <meta name="viewport" content="width=device-width,initial-scale=1">
+
   <title>Java NIO — lập trình mạng hiệu năng cao - Nguyễn Thanh Trà</title>
+
   <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>ðŸ‘¨â€ðŸ’»</text></svg>">
+
   <link rel="stylesheet" href="/css/style.css">
+
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
 </head>
+
 <body>
+
   <div class="overlay" id="overlay">
+
     <ul class="menu">
+
       <li><a href="/" data-i18n="home">Home</a></li>
+
       <li><a href="/posts/" data-i18n="blog">Blog</a></li>
+
       <li><a href="/about/" data-i18n="about">About</a></li>
+
     </ul>
+
   </div>
+
   <header>
+
     <nav>
+
       <div class="brand"><a href="/" data-i18n="site-title">Nguyễn Thanh Trà</a></div>
+
       <ul>
+
         <li><a href="/" data-i18n="home">Home</a></li>
+
         <li><a href="/posts/" data-i18n="blog">Blog</a></li>
+
         <li><a href="/about/" data-i18n="about">About</a></li>
+
         <li class="lang-toggle-wrapper">
+
           <div id="lang-switch" class="lang-switch" data-lang="vi">
+
             <div class="lang-switch-slider"></div>
+
             <button id="lang-vn" class="lang-btn">VN</button>
+
             <button id="lang-en" class="lang-btn">EN</button>
+
           </div>
+
         </li>
+
       </ul>
+
       <div class="menu-toggle" onclick="toggleMenu()" aria-label="menu">â˜°</div>
+
     </nav>
+
   </header>
+
   <main>
+
     <article class="post">
+
       <h1>Java NIO — lập trình mạng hiệu năng cao</h1>
+
       <p class="meta">2025-12-03</p>
+
       <div class="featured-image"><img src="https://images.unsplash.com/photo-1555949963-aa79dcee981c?w=800&auto=format&fit=crop" alt="Java NIO — lập trình mạng hiệu năng cao"></div>
+
       <p>Trong các bài trước, chúng ta đã tìm hiểu về Socket cơ bản và multithreading server. Tuy nhiên, với mô hình thread-per-connection, khi số lượng kết nối tăng lên hàng nghìn, hệ thống sẽ gặp vấn đề về hiệu suất và tài nguyên.</p>
 <p>Java NIO (New I/O hoặc Non-blocking I/O) được giới thiệu từ Java 1.4 để giải quyết vấn đề này. NIO cho phép một thread xử lý nhiều kết nối đồng thời thông qua cơ chế non-blocking I/O, giúp xây dựng server có khả năng mở rộng cao.</p>
 <img src="https://images.unsplash.com/photo-1555949963-aa79dcee981c?w=1200&auto=format&fit=crop" alt="Java NIO Architecture" style="max-width: 100%; height: auto; border-radius: 8px; margin: 20px 0;">
@@ -97,64 +139,125 @@
 <p>---</p>
 <h3>Tài liệu tham khảo</h3>
 <p>- [Oracle Java NIO Tutorial](https://docs.oracle.com/javase/tutorial/essential/io/nio.html)<br/>- [Java NIO Selector](https://docs.oracle.com/javase/8/docs/api/java/nio/channels/Selector.html)<br/>- [Guide to Java NIO](https://www.baeldung.com/java-nio-selector)<br/>- [Java NIO vs IO](https://jenkov.com/tutorials/java-nio/nio-vs-io.html)</p>
+
     </article>
+
     <section class="social-section">
+
       <div class="social-container">
-        <h2 data-i18n="social-title">X&#227; h&#7897;i</h2>
+
+        <h2 data-i18n="social-title">Xã hội</h2>
+
         <div class="social-grid">
+
           <a href="https://github.com/ThanhTra1409" target="_blank" class="social-card">
+
             <i class="fab fa-github social-icon"></i>
+
             <h3>GitHub</h3>
+
             <p>@nttra204</p>
+
           </a>
+
           <a href="https://www.facebook.com/nguyen.thanh.tra.970568?locale=vi_VN" target="_blank" class="social-card">
+
             <i class="fab fa-facebook social-icon"></i>
+
             <h3>Facebook</h3>
+
             <p>Nguy&#7877;n Thanh Tr&#224;</p>
+
           </a>
+
           <a href="https://www.instagram.com/nttra204_/?igsh=MXVlc3p1NG4zdnBidw%3D%3D&utm_source=qr" target="_blank" class="social-card">
+
             <i class="fab fa-instagram social-icon"></i>
+
             <h3>Instagram</h3>
+
             <p>@nttra204_</p>
+
           </a>
+
           <a href="https://www.linkedin.com/in/thanh-tra-nguyen-84a46833a" target="_blank" class="social-card">
+
             <i class="fab fa-linkedin social-icon"></i>
+
             <h3>LinkedIn</h3>
+
             <p>Nguy&#7877;n Thanh Tr&#224;</p>
+
           </a>
+
         </div>
+
       </div>
+
     </section>
+
   </main>
+
   <footer>
+
     <div class="footer-content">
+
       <div class="footer-brand">
+
         <h3 data-i18n="site-title">Nguyễn Thanh Trà</h3>
+
         <p class="footer-tagline" data-i18n="footer-tagline">Building scalable solutions with passion</p>
+
       </div>
+
       <div class="footer-contact">
-        <h4 data-i18n="contact-info">Th&#244;ng tin li&#234;n h&#7879;</h4>
+
+        <h4 data-i18n="contact-info">Thông tin liên hệ</h4>
+
         <div class="contact-info-grid">
+
           <div class="contact-info-item">
+
             <i class="fas fa-envelope"></i>
+
             <a href="mailto:ntra140924@gmail.com">ntra140924@gmail.com</a>
+
           </div>
+
           <div class="contact-info-item">
+
             <i class="fas fa-phone"></i>
+
             <a href="tel:0941779093">0941779093</a>
+
           </div>
+
         </div>
+
       </div>
+
       <div class="footer-bottom">
+
         <p><span data-i18n="footer-copyright">Â© 2025</span> <span data-i18n="site-title">Nguyễn Thanh Trà</span></p>
+
       </div>
+
     </div>
+
   </footer>
+
   <script src="/js/i18n.js?v=1.1"></script>
+
   <script>
+
   function toggleMenu(){
+
     document.body.classList.toggle('menu-open');
+
   }
+
   </script>
+
 </body>
+
 </html>
