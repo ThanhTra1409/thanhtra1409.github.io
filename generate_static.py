@@ -1022,13 +1022,13 @@ def build():
 
             <ul style="list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
 
-              <li data-i18n="project-1" style="padding: 0.8rem; color: #6b7280; font-size: 1rem; transition: all 0.3s ease; border-left: 3px solid #d1d5db;">XÃ¢y dá»±ng TCP/UDP Server vá»›i Java</li>
+              <li data-i18n="project-1" style="padding: 0.8rem; color: #6b7280; font-size: 1rem; transition: all 0.3s ease; border-left: 3px solid #d1d5db;">• Xây dựng TCP/UDP Server với Java</li>
 
-              <li data-i18n="project-2" style="padding: 0.8rem; color: #6b7280; font-size: 1rem; transition: all 0.3s ease; border-left: 3px solid #d1d5db;">PhÃ¡t triá»ƒn RESTful API vá»›i Node.js & Express</li>
+              <li data-i18n="project-2" style="padding: 0.8rem; color: #6b7280; font-size: 1rem; transition: all 0.3s ease; border-left: 3px solid #d1d5db;">• Phát triển RESTful API với Node.js & Express</li>
 
-              <li data-i18n="project-3" style="padding: 0.8rem; color: #6b7280; font-size: 1rem; transition: all 0.3s ease; border-left: 3px solid #d1d5db;">Triá»ƒn khai WebSocket real-time communication</li>
+              <li data-i18n="project-3" style="padding: 0.8rem; color: #6b7280; font-size: 1rem; transition: all 0.3s ease; border-left: 3px solid #d1d5db;">• Triển khai WebSocket real-time communication</li>
 
-              <li data-i18n="project-4" style="padding: 0.8rem; color: #6b7280; font-size: 1rem; transition: all 0.3s ease; border-left: 3px solid #d1d5db;">Security & CORS handling</li>
+              <li data-i18n="project-4" style="padding: 0.8rem; color: #6b7280; font-size: 1rem; transition: all 0.3s ease; border-left: 3px solid #d1d5db;">• Security & CORS handling</li>
 
             </ul>
 
