@@ -862,7 +862,7 @@ def build():
 
                     <strong data-i18n="location-label" style="color: #6b7280; font-size: 1rem; display: block; margin-bottom: 0.5rem;">Äá»‹a chá»‰</strong>
 
-                    <span data-i18n="location" style="font-size: 1.1rem; color: #2d3748; font-weight: 500;">TP. Há»“ ChÃ­ Minh</span>
+                    <span data-i18n="location" style="font-size: 1.1rem; color: #2d3748; font-weight: 500;">TP. Há» ChÃ­ Minh</span>
 
                   </div>
 
@@ -914,15 +914,15 @@ def build():
 
             <ul style="list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 0.8rem;">
 
-              <li data-i18n="knowledge-1" style="padding: 0.5rem 0; color: #6b7280; font-size: 1rem; transition: all 0.3s ease;">"“ Láº­p trÃ¬nh hÆ°á»›ng Ä‘á»‘i tÆ°á»£ng (OOP)</li>
+              <li data-i18n="knowledge-1" style="padding: 0.5rem 0; color: #6b7280; font-size: 1rem; transition: all 0.3s ease;">" Láº­p trÃ¬nh hÆ°á»›ng Ä‘á»‘i tÆ°á»£ng (OOP)</li>
 
-              <li data-i18n="knowledge-2" style="padding: 0.5rem 0; color: #6b7280; font-size: 1rem; transition: all 0.3s ease;">"“ Cáº¥u trÃºc dá»¯ liá»‡u & Giáº£i thuáº­t</li>
+              <li data-i18n="knowledge-2" style="padding: 0.5rem 0; color: #6b7280; font-size: 1rem; transition: all 0.3s ease;">" Cáº¥u trÃºc dá»¯ liá»‡u & Giáº£i thuáº­t</li>
 
-              <li data-i18n="knowledge-3" style="padding: 0.5rem 0; color: #6b7280; font-size: 1rem; transition: all 0.3s ease;">"“ Láº­p trÃ¬nh máº¡ng & Distributed Systems</li>
+              <li data-i18n="knowledge-3" style="padding: 0.5rem 0; color: #6b7280; font-size: 1rem; transition: all 0.3s ease;">" Láº­p trÃ¬nh máº¡ng & Distributed Systems</li>
 
-              <li data-i18n="knowledge-4" style="padding: 0.5rem 0; color: #6b7280; font-size: 1rem; transition: all 0.3s ease;">"“ Database Design & Management</li>
+              <li data-i18n="knowledge-4" style="padding: 0.5rem 0; color: #6b7280; font-size: 1rem; transition: all 0.3s ease;">" Database Design & Management</li>
 
-              <li data-i18n="knowledge-5" style="padding: 0.5rem 0; color: #6b7280; font-size: 1rem; transition: all 0.3s ease;">"“ Software Engineering & Design Patterns</li>
+              <li data-i18n="knowledge-5" style="padding: 0.5rem 0; color: #6b7280; font-size: 1rem; transition: all 0.3s ease;">" Software Engineering & Design Patterns</li>
 
             </ul>
 
@@ -950,13 +950,13 @@ def build():
 
             <ul style="list-style: none; padding: 0; margin: 0;">
 
-              <li style="padding: 0.5rem 0; color: #6b7280; font-size: 1rem;">"“ Java (Spring Boot, Socket Programming, Multithreading, NIO)</li>
+              <li style="padding: 0.5rem 0; color: #6b7280; font-size: 1rem;">" Java (Spring Boot, Socket Programming, Multithreading, NIO)</li>
 
-              <li style="padding: 0.5rem 0; color: #6b7280; font-size: 1rem;">"“ Node.js (Express.js, Socket.IO, REST API)</li>
+              <li style="padding: 0.5rem 0; color: #6b7280; font-size: 1rem;">" Node.js (Express.js, Socket.IO, REST API)</li>
 
-              <li style="padding: 0.5rem 0; color: #6b7280; font-size: 1rem;">"“ Database: MySQL, PostgreSQL, MongoDB</li>
+              <li style="padding: 0.5rem 0; color: #6b7280; font-size: 1rem;">" Database: MySQL, PostgreSQL, MongoDB</li>
 
-              <li style="padding: 0.5rem 0; color: #6b7280; font-size: 1rem;">"“ API Design (RESTful, WebSocket)</li>
+              <li style="padding: 0.5rem 0; color: #6b7280; font-size: 1rem;">" API Design (RESTful, WebSocket)</li>
 
             </ul>
 
@@ -972,11 +972,11 @@ def build():
 
             <ul style="list-style: none; padding: 0; margin: 0;">
 
-              <li style="padding: 0.5rem 0; color: #6b7280; font-size: 1rem;">"“ HTML5, CSS3, JavaScript (ES6+)</li>
+              <li style="padding: 0.5rem 0; color: #6b7280; font-size: 1rem;">" HTML5, CSS3, JavaScript (ES6+)</li>
 
-              <li style="padding: 0.5rem 0; color: #6b7280; font-size: 1rem;">"“ React/Vue.js basics</li>
+              <li style="padding: 0.5rem 0; color: #6b7280; font-size: 1rem;">" React/Vue.js basics</li>
 
-              <li data-i18n="responsive-design" style="padding: 0.5rem 0; color: #6b7280; font-size: 1rem;">"“ Responsive Web Design</li>
+              <li data-i18n="responsive-design" style="padding: 0.5rem 0; color: #6b7280; font-size: 1rem;">" Responsive Web Design</li>
 
             </ul>
 
@@ -992,13 +992,13 @@ def build():
 
             <ul style="list-style: none; padding: 0; margin: 0;">
 
-              <li style="padding: 0.5rem 0; color: #6b7280; font-size: 1rem;">"“ Git/GitHub</li>
+              <li style="padding: 0.5rem 0; color: #6b7280; font-size: 1rem;">" Git/GitHub</li>
 
-              <li style="padding: 0.5rem 0; color: #6b7280; font-size: 1rem;">"“ Docker basics</li>
+              <li style="padding: 0.5rem 0; color: #6b7280; font-size: 1rem;">" Docker basics</li>
 
-              <li style="padding: 0.5rem 0; color: #6b7280; font-size: 1rem;">"“ Postman, VS Code</li>
+              <li style="padding: 0.5rem 0; color: #6b7280; font-size: 1rem;">" Postman, VS Code</li>
 
-              <li style="padding: 0.5rem 0; color: #6b7280; font-size: 1rem;">"“ Linux command line</li>
+              <li style="padding: 0.5rem 0; color: #6b7280; font-size: 1rem;">" Linux command line</li>
 
             </ul>
 
@@ -1024,13 +1024,13 @@ def build():
 
             <ul style="list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
 
-              <li data-i18n="project-1" style="padding: 0.8rem; color: #6b7280; font-size: 1rem; transition: all 0.3s ease; border-left: 3px solid #d1d5db;">"“ XÃ¢y dá»±ng TCP/UDP Server vá»›i Java</li>
+              <li data-i18n="project-1" style="padding: 0.8rem; color: #6b7280; font-size: 1rem; transition: all 0.3s ease; border-left: 3px solid #d1d5db;">" XÃ¢y dá»±ng TCP/UDP Server vá»›i Java</li>
 
-              <li data-i18n="project-2" style="padding: 0.8rem; color: #6b7280; font-size: 1rem; transition: all 0.3s ease; border-left: 3px solid #d1d5db;">"“ PhÃ¡t triá»ƒn RESTful API vá»›i Node.js & Express</li>
+              <li data-i18n="project-2" style="padding: 0.8rem; color: #6b7280; font-size: 1rem; transition: all 0.3s ease; border-left: 3px solid #d1d5db;">" PhÃ¡t triá»ƒn RESTful API vá»›i Node.js & Express</li>
 
-              <li data-i18n="project-3" style="padding: 0.8rem; color: #6b7280; font-size: 1rem; transition: all 0.3s ease; border-left: 3px solid #d1d5db;">"“ Triá»ƒn khai WebSocket real-time communication</li>
+              <li data-i18n="project-3" style="padding: 0.8rem; color: #6b7280; font-size: 1rem; transition: all 0.3s ease; border-left: 3px solid #d1d5db;">" Triá»ƒn khai WebSocket real-time communication</li>
 
-              <li data-i18n="project-4" style="padding: 0.8rem; color: #6b7280; font-size: 1rem; transition: all 0.3s ease; border-left: 3px solid #d1d5db;">"“ Security & CORS handling</li>
+              <li data-i18n="project-4" style="padding: 0.8rem; color: #6b7280; font-size: 1rem; transition: all 0.3s ease; border-left: 3px solid #d1d5db;">" Security & CORS handling</li>
 
             </ul>
 
