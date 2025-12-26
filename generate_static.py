@@ -402,7 +402,7 @@ def build():
 
   <title>{site_title}</title>
 
-  <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>ðŸ‘¨"€ðŸ’»</text></svg>">
+  <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>ðŸ‘¨"€ðŸ’»</text></svg>>
 
   <link rel="stylesheet" href="/css/style.css">
 
@@ -468,7 +468,7 @@ def build():
 
       </ul>
 
-      <div class="menu-toggle" onclick="toggleMenu()" aria-label="menu">"˜°</div>
+      <div class="menu-toggle" onclick="toggleMenu()" aria-label="menu">˜°</div>
 
     </nav>
 
@@ -742,7 +742,7 @@ def build():
 
   <title>About - {site_title}</title>
 
-  <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>ðŸ‘¨"€ðŸ’»</text></svg>">
+  <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>ðŸ‘¨"€ðŸ’»</text></svg>>
 
   <link rel="stylesheet" href="/css/style.css">
 
@@ -798,7 +798,7 @@ def build():
 
       </ul>
 
-      <div class="menu-toggle" onclick="toggleMenu()" aria-label="menu">"˜°</div>
+      <div class="menu-toggle" onclick="toggleMenu()" aria-label="menu">˜°</div>
 
     </nav>
 
@@ -870,9 +870,7 @@ def build():
 
                 <div style="padding: 1.5rem 2rem; background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%); border-left: 4px solid #667eea; border-radius: 8px; font-style: italic; color: #4b5563; font-size: 1.05rem; line-height: 1.6; max-width: 600px;">
 
-                  "<span data-i18n="slogan">CÃ´ng nghá»‡ luÃ´n thay Ä‘á»•i, tÃ´i chá»n cÃ¡ch há»c há»i má»—i ngÃ y Ä‘á»ƒ khÃ´ng bá»‹ bá» láº¡i phÃ­a sau.</span>"
-
-                </div>
+                  "<span data-i18n="slogan">CÃ´ng nghá»‡ luÃ´n thay Ä‘á»•i, tÃ´i chá»n cÃ¡ch há»c há»i má»—i ngÃ y Ä‘á»ƒ khÃ´ng bá»‹ bá» láº¡i phÃ­a sau.</span></div>
 
               </div>
 
@@ -914,15 +912,15 @@ def build():
 
             <ul style="list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 0.8rem;">
 
-              <li data-i18n="knowledge-1" style="padding: 0.5rem 0; color: #6b7280; font-size: 1rem; transition: all 0.3s ease;">" Láº­p trÃ¬nh hÆ°á»›ng Ä‘á»‘i tÆ°á»£ng (OOP)</li>
+              <li data-i18n="knowledge-1" style="padding: 0.5rem 0; color: #6b7280; font-size: 1rem; transition: all 0.3s ease;">Láº­p trÃ¬nh hÆ°á»›ng Ä‘á»‘i tÆ°á»£ng (OOP)</li>
 
-              <li data-i18n="knowledge-2" style="padding: 0.5rem 0; color: #6b7280; font-size: 1rem; transition: all 0.3s ease;">" Cáº¥u trÃºc dá»¯ liá»‡u & Giáº£i thuáº­t</li>
+              <li data-i18n="knowledge-2" style="padding: 0.5rem 0; color: #6b7280; font-size: 1rem; transition: all 0.3s ease;">Cáº¥u trÃºc dá»¯ liá»‡u & Giáº£i thuáº­t</li>
 
-              <li data-i18n="knowledge-3" style="padding: 0.5rem 0; color: #6b7280; font-size: 1rem; transition: all 0.3s ease;">" Láº­p trÃ¬nh máº¡ng & Distributed Systems</li>
+              <li data-i18n="knowledge-3" style="padding: 0.5rem 0; color: #6b7280; font-size: 1rem; transition: all 0.3s ease;">Láº­p trÃ¬nh máº¡ng & Distributed Systems</li>
 
-              <li data-i18n="knowledge-4" style="padding: 0.5rem 0; color: #6b7280; font-size: 1rem; transition: all 0.3s ease;">" Database Design & Management</li>
+              <li data-i18n="knowledge-4" style="padding: 0.5rem 0; color: #6b7280; font-size: 1rem; transition: all 0.3s ease;">Database Design & Management</li>
 
-              <li data-i18n="knowledge-5" style="padding: 0.5rem 0; color: #6b7280; font-size: 1rem; transition: all 0.3s ease;">" Software Engineering & Design Patterns</li>
+              <li data-i18n="knowledge-5" style="padding: 0.5rem 0; color: #6b7280; font-size: 1rem; transition: all 0.3s ease;">Software Engineering & Design Patterns</li>
 
             </ul>
 
@@ -950,13 +948,13 @@ def build():
 
             <ul style="list-style: none; padding: 0; margin: 0;">
 
-              <li style="padding: 0.5rem 0; color: #6b7280; font-size: 1rem;">" Java (Spring Boot, Socket Programming, Multithreading, NIO)</li>
+              <li style="padding: 0.5rem 0; color: #6b7280; font-size: 1rem;">Java (Spring Boot, Socket Programming, Multithreading, NIO)</li>
 
-              <li style="padding: 0.5rem 0; color: #6b7280; font-size: 1rem;">" Node.js (Express.js, Socket.IO, REST API)</li>
+              <li style="padding: 0.5rem 0; color: #6b7280; font-size: 1rem;">Node.js (Express.js, Socket.IO, REST API)</li>
 
-              <li style="padding: 0.5rem 0; color: #6b7280; font-size: 1rem;">" Database: MySQL, PostgreSQL, MongoDB</li>
+              <li style="padding: 0.5rem 0; color: #6b7280; font-size: 1rem;">Database: MySQL, PostgreSQL, MongoDB</li>
 
-              <li style="padding: 0.5rem 0; color: #6b7280; font-size: 1rem;">" API Design (RESTful, WebSocket)</li>
+              <li style="padding: 0.5rem 0; color: #6b7280; font-size: 1rem;">API Design (RESTful, WebSocket)</li>
 
             </ul>
 
@@ -972,11 +970,11 @@ def build():
 
             <ul style="list-style: none; padding: 0; margin: 0;">
 
-              <li style="padding: 0.5rem 0; color: #6b7280; font-size: 1rem;">" HTML5, CSS3, JavaScript (ES6+)</li>
+              <li style="padding: 0.5rem 0; color: #6b7280; font-size: 1rem;">HTML5, CSS3, JavaScript (ES6+)</li>
 
-              <li style="padding: 0.5rem 0; color: #6b7280; font-size: 1rem;">" React/Vue.js basics</li>
+              <li style="padding: 0.5rem 0; color: #6b7280; font-size: 1rem;">React/Vue.js basics</li>
 
-              <li data-i18n="responsive-design" style="padding: 0.5rem 0; color: #6b7280; font-size: 1rem;">" Responsive Web Design</li>
+              <li data-i18n="responsive-design" style="padding: 0.5rem 0; color: #6b7280; font-size: 1rem;">Responsive Web Design</li>
 
             </ul>
 
@@ -992,13 +990,13 @@ def build():
 
             <ul style="list-style: none; padding: 0; margin: 0;">
 
-              <li style="padding: 0.5rem 0; color: #6b7280; font-size: 1rem;">" Git/GitHub</li>
+              <li style="padding: 0.5rem 0; color: #6b7280; font-size: 1rem;">Git/GitHub</li>
 
-              <li style="padding: 0.5rem 0; color: #6b7280; font-size: 1rem;">" Docker basics</li>
+              <li style="padding: 0.5rem 0; color: #6b7280; font-size: 1rem;">Docker basics</li>
 
-              <li style="padding: 0.5rem 0; color: #6b7280; font-size: 1rem;">" Postman, VS Code</li>
+              <li style="padding: 0.5rem 0; color: #6b7280; font-size: 1rem;">Postman, VS Code</li>
 
-              <li style="padding: 0.5rem 0; color: #6b7280; font-size: 1rem;">" Linux command line</li>
+              <li style="padding: 0.5rem 0; color: #6b7280; font-size: 1rem;">Linux command line</li>
 
             </ul>
 
@@ -1024,13 +1022,13 @@ def build():
 
             <ul style="list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
 
-              <li data-i18n="project-1" style="padding: 0.8rem; color: #6b7280; font-size: 1rem; transition: all 0.3s ease; border-left: 3px solid #d1d5db;">" XÃ¢y dá»±ng TCP/UDP Server vá»›i Java</li>
+              <li data-i18n="project-1" style="padding: 0.8rem; color: #6b7280; font-size: 1rem; transition: all 0.3s ease; border-left: 3px solid #d1d5db;">XÃ¢y dá»±ng TCP/UDP Server vá»›i Java</li>
 
-              <li data-i18n="project-2" style="padding: 0.8rem; color: #6b7280; font-size: 1rem; transition: all 0.3s ease; border-left: 3px solid #d1d5db;">" PhÃ¡t triá»ƒn RESTful API vá»›i Node.js & Express</li>
+              <li data-i18n="project-2" style="padding: 0.8rem; color: #6b7280; font-size: 1rem; transition: all 0.3s ease; border-left: 3px solid #d1d5db;">PhÃ¡t triá»ƒn RESTful API vá»›i Node.js & Express</li>
 
-              <li data-i18n="project-3" style="padding: 0.8rem; color: #6b7280; font-size: 1rem; transition: all 0.3s ease; border-left: 3px solid #d1d5db;">" Triá»ƒn khai WebSocket real-time communication</li>
+              <li data-i18n="project-3" style="padding: 0.8rem; color: #6b7280; font-size: 1rem; transition: all 0.3s ease; border-left: 3px solid #d1d5db;">Triá»ƒn khai WebSocket real-time communication</li>
 
-              <li data-i18n="project-4" style="padding: 0.8rem; color: #6b7280; font-size: 1rem; transition: all 0.3s ease; border-left: 3px solid #d1d5db;">" Security & CORS handling</li>
+              <li data-i18n="project-4" style="padding: 0.8rem; color: #6b7280; font-size: 1rem; transition: all 0.3s ease; border-left: 3px solid #d1d5db;">Security & CORS handling</li>
 
             </ul>
 
@@ -1150,7 +1148,7 @@ def build():
 
   <title>{title} - {site_title}</title>
 
-  <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>ðŸ‘¨"€ðŸ’»</text></svg>">
+  <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>ðŸ‘¨"€ðŸ’»</text></svg>>
 
   <link rel="stylesheet" href="/css/style.css">
 
@@ -1206,7 +1204,7 @@ def build():
 
       </ul>
 
-      <div class="menu-toggle" onclick="toggleMenu()" aria-label="menu">"˜°</div>
+      <div class="menu-toggle" onclick="toggleMenu()" aria-label="menu">˜°</div>
 
     </nav>
 
@@ -1288,7 +1286,7 @@ def build():
 
   <title>{title_en} - {site_title}</title>
 
-  <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>ðŸ‘¨"€ðŸ’»</text></svg>">
+  <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>ðŸ‘¨"€ðŸ’»</text></svg>>
 
   <link rel="stylesheet" href="/css/style.css">
 
@@ -1344,7 +1342,7 @@ def build():
 
       </ul>
 
-      <div class="menu-toggle" onclick="toggleMenu()" aria-label="menu">"˜°</div>
+      <div class="menu-toggle" onclick="toggleMenu()" aria-label="menu">˜°</div>
 
     </nav>
 
@@ -1468,7 +1466,7 @@ def build():
 
   <title>Blog - {site_title}</title>
 
-  <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>ðŸ‘¨"€ðŸ’»</text></svg>">
+  <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>ðŸ‘¨"€ðŸ’»</text></svg>>
 
   <link rel="stylesheet" href="/css/style.css">
 
@@ -1524,7 +1522,7 @@ def build():
 
       </ul>
 
-      <div class="menu-toggle" onclick="toggleMenu()" aria-label="menu">"˜°</div>
+      <div class="menu-toggle" onclick="toggleMenu()" aria-label="menu">˜°</div>
 
     </nav>
 
@@ -1638,7 +1636,7 @@ def build():
 
   <meta name="viewport" content="width=device-width,initial-scale=1">
 
-  <title>Blog - {site_title}</title>  <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>ðŸ‘¨"€ðŸ’»</text></svg>">  <link rel="stylesheet" href="/css/style.css">
+  <title>Blog - {site_title}</title>  <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>ðŸ‘¨"€ðŸ’»</text></svg>>  <link rel="stylesheet" href="/css/style.css">
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
@@ -1692,7 +1690,7 @@ def build():
 
       </ul>
 
-      <div class="menu-toggle" onclick="toggleMenu()" aria-label="menu">"˜°</div>
+      <div class="menu-toggle" onclick="toggleMenu()" aria-label="menu">˜°</div>
 
     </nav>
 
