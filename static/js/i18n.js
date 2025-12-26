@@ -394,6 +394,12 @@ function updateContent(shouldRedirect = false) {
           }
         }
       }
+      
+      // Handle about page - just update content without redirect since there's only one about page
+      if (currentPath.includes('/about')) {
+        // About page uses i18n to switch languages, no redirect needed
+        // Just let the updateContent function handle the translation
+      }
     }
     
     // Remove transitioning class
