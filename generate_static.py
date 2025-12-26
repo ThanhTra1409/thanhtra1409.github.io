@@ -182,7 +182,7 @@ def build():
     copy_static()
 
     # read config title
-    site_title = 'Nguyá»…n Thanh TrÃ '
+    site_title = 'Nguyễn Thanh Trà'
     tagline = ''
     cfg = os.path.join(ROOT, 'config.toml')
     if os.path.exists(cfg):
@@ -239,19 +239,19 @@ def build():
   <main>
     <section class="hero">
       <div class="hero-content">
-        <p class="hero-greeting" data-i18n="hero-greeting">Xin chÃ o, tÃ´i lÃ </p>
-        <h1 data-i18n="hero-name">Nguyá»…n Thanh TrÃ </h1>
+        <p class="hero-greeting" data-i18n="hero-greeting">Xin chào, tôi là</p>
+        <h1 data-i18n="hero-name">Nguyễn Thanh Trà</h1>
         <div class="hero-intro">
           <p><strong data-i18n="hero-role">Software Engineer | Backend Developer</strong></p>
-          <p data-i18n="hero-intro-main">TÃ´i lÃ  sinh viÃªn nÄƒm 4 yÃªu thÃ­ch cÃ´ng nghá»‡ pháº§n má»m, hiá»‡n Ä‘ang tÃ¬m hiá»ƒu cÃ¡c kiáº¿n thá»©c cÆ¡ báº£n vá» láº­p trÃ¬nh vÃ  phÃ¡t triá»ƒn pháº§n má»m. CÃ³ tinh tháº§n há»c há»i, chá»§ Ä‘á»™ng rÃ¨n luyá»‡n tÆ° duy logic vÃ  ká»¹ nÄƒng chuyÃªn mÃ´n Ä‘á»ƒ phá»¥c vá»¥ há»c táº­p vÃ  cÃ´ng viá»‡c trong tÆ°Æ¡ng lai.</p>
+          <p data-i18n="hero-intro-main">Tôi là sinh viên năm 4 yêu thích công nghệ phần mềm, hiện đang tìm hiểu các kiến thức cơ bản về lập trình và phát triển phần mềm. Có tinh thần học hỏi, chủ động rèn luyện tư duy logic và kỹ năng chuyên môn để phục vụ học tập và công việc trong tương lai.</p>
         </div>
         <div class="cta">
           <a class="btn primary" href="/posts/" data-i18n="view-posts">Xem portfolio</a>
-          <a class="btn ghost" href="/about/" data-i18n="about-me">LiÃªn há»‡</a>
+          <a class="btn ghost" href="/about/" data-i18n="about-me">Liên hệ</a>
         </div>
       </div>
       <div class="hero-image-wrapper">
-        <img src="/images/133.jpg" alt="Nguyá»…n Thanh TrÃ " class="hero-avatar">
+        <img src="/images/133.jpg" alt="Nguyễn Thanh Trà" class="hero-avatar">
       </div>
     </section>
     <section class="intro">
@@ -265,7 +265,7 @@ def build():
           <img src="/images/cert-networking-basics.jpg" alt="Networking Basics Certificate" style="width: 100%; height: auto; object-fit: contain;">
           <div style="padding: 1.5rem; text-align: center;">
             <h3 style="margin: 0 0 0.5rem 0; font-size: 1.2rem; color: #5b6fce;">Networking Basics</h3>
-            <p style="margin: 0.5rem 0; color: #666; font-size: 0.95rem;">Nguyá»…n Thanh TrÃ </p>
+            <p style="margin: 0.5rem 0; color: #666; font-size: 0.95rem;">Nguyễn Thanh Trà</p>
             <p style="margin: 0.5rem 0; color: #999; font-size: 0.9rem;">Nov 2025</p>
           </div>
         </div>
@@ -274,7 +274,7 @@ def build():
           <img src="/images/cert-js-essentials-1.jpg" alt="JavaScript Essentials 1 Certificate" style="width: 100%; height: auto; object-fit: contain;">
           <div style="padding: 1.5rem; text-align: center;">
             <h3 style="margin: 0 0 0.5rem 0; font-size: 1.2rem; color: #5b6fce;">JavaScript Essentials 1</h3>
-            <p style="margin: 0.5rem 0; color: #666; font-size: 0.95rem;">Nguyá»…n Thanh TrÃ </p>
+            <p style="margin: 0.5rem 0; color: #666; font-size: 0.95rem;">Nguyễn Thanh Trà</p>
             <p style="margin: 0.5rem 0; color: #999; font-size: 0.9rem;">Dec 2025</p>
           </div>
         </div>
@@ -283,7 +283,7 @@ def build():
           <img src="/images/cert-js-essentials-2.jpg" alt="JavaScript Essentials 2 Certificate" style="width: 100%; height: auto; object-fit: contain;">
           <div style="padding: 1.5rem; text-align: center;">
             <h3 style="margin: 0 0 0.5rem 0; font-size: 1.2rem; color: #5b6fce;">JavaScript Essentials 2</h3>
-            <p style="margin: 0.5rem 0; color: #666; font-size: 0.95rem;">Nguyá»…n Thanh TrÃ </p>
+            <p style="margin: 0.5rem 0; color: #666; font-size: 0.95rem;">Nguyễn Thanh Trà</p>
             <p style="margin: 0.5rem 0; color: #999; font-size: 0.9rem;">Dec 2025</p>
           </div>
         </div>
@@ -308,7 +308,7 @@ def build():
           <a href="https://www.facebook.com/nguyen.thanh.tra.970568?locale=vi_VN" target="_blank" class="social-card">
             <i class="fab fa-facebook social-icon"></i>
             <h3>Facebook</h3>
-            <p>Nguyá»…n Thanh TrÃ </p>
+            <p>Nguyễn Thanh Trà</p>
           </a>
           <a href="https://www.instagram.com/nttra204_/?igsh=MXVlc3p1NG4zdnBidw%3D%3D&utm_source=qr" target="_blank" class="social-card">
             <i class="fab fa-instagram social-icon"></i>
@@ -318,7 +318,7 @@ def build():
           <a href="https://www.linkedin.com/in/nttra204" target="_blank" class="social-card">
             <i class="fab fa-linkedin social-icon"></i>
             <h3>LinkedIn</h3>
-            <p>Nguyá»…n Thanh TrÃ </p>
+            <p>Nguyễn Thanh Trà</p>
           </a>
         </div>
       </div>
@@ -409,13 +409,13 @@ def build():
             <h2 data-i18n="personal-info" style="text-align: center; margin-bottom: 3rem; margin-top: 0; font-size: 2.5rem; font-weight: 700; margin-right: -114px;">ThÃ´ng tin cÃ¡ nhÃ¢n</h2>
             <div style="display: flex; align-items: flex-start; justify-content: flex-start; gap: 4rem; max-width: 100%; margin: 0 auto;">
               <div style="flex-shrink: 0; margin-left: -114px; margin-top: -76px;">
-                <img src="/images/133.jpg" alt="Nguyá»…n Thanh TrÃ " style="width: 280px; height: 380px; border-radius: 16px; object-fit: cover; border: 4px solid rgba(107, 114, 128, 0.2); box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);">
+                <img src="/images/133.jpg" alt="Nguyễn Thanh Trà" style="width: 280px; height: 380px; border-radius: 16px; object-fit: cover; border: 4px solid rgba(107, 114, 128, 0.2); box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);">
               </div>
               <div style="flex: 1;">
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem 4rem; max-width: 600px; margin-bottom: 2rem;">
                   <div>
-                    <strong data-i18n="fullname-label" style="color: #6b7280; font-size: 1rem; display: block; margin-bottom: 0.5rem;">Há» vÃ  tÃªn</strong>
-                    <span style="font-size: 1.1rem; color: #2d3748; font-weight: 500;">Nguyá»…n Thanh TrÃ </span>
+                    <strong data-i18n="fullname-label" style="color: #6b7280; font-size: 1rem; display: block; margin-bottom: 0.5rem;">Họ và tên</strong>
+                    <span style="font-size: 1.1rem; color: #2d3748; font-weight: 500;">Nguyễn Thanh Trà</span>
                   </div>
                   
                   <div>
