@@ -1,4 +1,5 @@
 // Internationalization (i18n) Configuration
+// Version: 1.1 - Updated language persistence
 const translations = {
   vi: {
     // Header & Navigation
